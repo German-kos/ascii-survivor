@@ -1,4 +1,11 @@
-import { Direction, TileSprite, TileType, ToolLevel, ToolType } from "./types.js";
+import {
+  Direction,
+  ItemType,
+  TileSprite,
+  TileType,
+  ToolLevel,
+  ToolType,
+} from "./types.js";
 
 export interface TileConfig {
   name: string;
@@ -16,6 +23,24 @@ export interface TileConfig {
   toolRequired: ToolType;
   toolLevelRequired: ToolLevel;
   leavesBehind: TileType;
+  canBuildOn: boolean;
+}
+
+export interface ToolConfig {
+  name: string;
+  itemType: ItemType;
+  type: ToolType;
+  toolLevel: ToolLevel;
+  // sprite // later implementation with images
+  attackDamage: number;
+  attackSpeed: number;
+  tileDamage: number;
+  useSpeed: number;
+  level: ToolLevel;
+  description: string;
+  canDestroy: boolean;
+  canBuild: boolean;
+  canHarvest: boolean;
 }
 
 export interface SaveData {

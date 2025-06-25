@@ -1,12 +1,14 @@
-import { InteractiveCursor } from "../game/player/interactive-cursor";
-import { Player } from "../game/player/player";
-import { TileConfig } from "../types/interfaces";
+import { Game } from "../game/game.js";
+import { InteractiveCursor } from "../game/player/interactive-cursor.js";
+import { Player } from "../game/player/player.js";
+import { TileConfig } from "../types/interfaces.js";
 
 export class InputHandler {
   player: Player;
   cursor: InteractiveCursor;
   currentChunk: TileConfig[][];
   ctx: CanvasRenderingContext2D;
+  game: Game;
 
   constructor(
     player: Player,
@@ -18,6 +20,7 @@ export class InputHandler {
     this.cursor = cursor;
     this.currentChunk = currentChunk;
     this.ctx = ctx;
+    this.game = new Game();
 
     this.initializeEventListeners();
   }
@@ -28,7 +31,7 @@ export class InputHandler {
     });
   }
 
-  private handleInput(event: KeyboardEvent): void {
+  private handleInput(event: KeyboardEvent, game: Game): void {
     switch (event.code) {
       case "KeyW":
       case "KeyA":

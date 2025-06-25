@@ -22,6 +22,23 @@ export type ToolType =
   | "bucket"
   | "rake";
 
+export type ToolAction =
+  | "destroy"
+  | "build"
+  | "harvest"
+  | "plant"
+  | "water"
+  | "use";
+
+export type ItemType =
+  | "weapon"
+  | "tool"
+  | "seed"
+  | "food"
+  | "consumable"
+  | "material"
+  | "misc";
+
 export type ToolLevel = "none" | "basic" | "advanced" | "expert" | "master";
 
 export type TileSprite = "." | "█" | "♠" | "≈" | "●" | "▓" | "*" | "∴";

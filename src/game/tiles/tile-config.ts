@@ -17,6 +17,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     toolRequired: "none",
     toolLevelRequired: "none",
     leavesBehind: "empty",
+    canBuildOn: true,
   },
   wall: {
     name: "Brick Wall",
@@ -34,6 +35,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     toolRequired: "pickaxe",
     toolLevelRequired: "basic",
     leavesBehind: "dirt",
+    canBuildOn: false,
   },
   tree: {
     name: "Tree",
@@ -51,6 +53,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     toolRequired: "axe",
     toolLevelRequired: "basic",
     leavesBehind: "dirt",
+    canBuildOn: false,
   },
   water: {
     name: "Water",
@@ -68,6 +71,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     toolRequired: "bucket",
     toolLevelRequired: "basic",
     leavesBehind: "dirt", // Change to stump later
+    canBuildOn: true,
   },
   rock: {
     name: "Rock",
@@ -85,6 +89,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     toolRequired: "pickaxe",
     toolLevelRequired: "basic",
     leavesBehind: "gravel",
+    canBuildOn: false,
   },
   grass: {
     name: "Grass",
@@ -102,6 +107,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     toolRequired: "rake",
     toolLevelRequired: "none",
     leavesBehind: "dirt",
+    canBuildOn: true,
   },
   flower: {
     name: "Flower",
@@ -119,6 +125,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     toolRequired: "sickle",
     toolLevelRequired: "basic",
     leavesBehind: "grass",
+    canBuildOn: true,
   },
   gravel: {
     name: "Gravel",
@@ -136,6 +143,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     toolRequired: "shovel",
     toolLevelRequired: "basic",
     leavesBehind: "dirt",
+    canBuildOn: true,
   },
   dirt: {
     name: "Dirt",
@@ -153,5 +161,6 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     toolRequired: "shovel",
     toolLevelRequired: "basic",
     leavesBehind: "empty",
+    canBuildOn: true,
   },
 };

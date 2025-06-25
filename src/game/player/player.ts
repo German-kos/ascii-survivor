@@ -1,7 +1,7 @@
 import { Direction } from "../../types/types.js";
 import { renderWorld } from "../../rendering/renderer.js";
 import { InteractiveCursor } from "./interactive-cursor.js";
-import { TileConfig } from "../../types/interfaces.js";
+import { Position, TileConfig } from "../../types/interfaces.js";
 
 export class Player {
   sprite: string;
@@ -47,6 +47,23 @@ export class Player {
     this.level = saveData.level || this.level;
   }
 
+  setPosition(position: Position): void {
+    if (position.x < 0 || position.y < 0) {
+      throw new Error("Position cannot be negative");
+    }
+    this.x = position.x;
+    this.y = position.y;
+  }
+
+  getPosition(): Position {
+    return { x: this.x, y: this.y };
+  }
+
+  getNextPosition(direction: Direction): Position {
+    const { dx, dy } = Player.MOVEMENT_DELTAS[direction];
+    return { x: this.x + dx, y: this.y + dy };
+  }
+  
   movePlayer(
     event: KeyboardEvent,
     currentChunk: TileConfig[][],
