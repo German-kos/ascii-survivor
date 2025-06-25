@@ -38,7 +38,7 @@ export class WorldSystem {
   destroyTile(position: Position, tool: ToolConfig) {
     const tile = this.getTile(position);
     if (tile.canBeDestroyed && this.toolMatches(tile, tool)) {
-      // TODO: This c
+      // TODO: This
     }
   }
 
