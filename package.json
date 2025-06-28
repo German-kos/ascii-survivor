@@ -1,0 +1,15 @@
+{
+  "name": "ascii-survivor",
+  "version": "1.0.0",
+  "description": "Creating a game in TypeScript to better understand JS/TS. An ASCII based survival game.",
+  "license": "ISC",
+  "author": "German Kostiakov",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
