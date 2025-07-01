@@ -56,6 +56,7 @@ function printChunk(chunk: string[][]) {
 
 // Player movement:
 function handlePlayerMovement(event: KeyboardEvent) {
+  console.log(`Previous facing direction: ${player.facing}`);
   switch (event.key) {
     case "ArrowUp":
       currentChunk[player.currentRow][player.currentCol] = player.standingOn; // Clear previous position
@@ -63,6 +64,8 @@ function handlePlayerMovement(event: KeyboardEvent) {
       player.standingOn = currentChunk[player.currentRow][player.currentCol]; // Update standing type
       player.facing = "up"; // Update facing direction
       currentChunk[player.currentRow][player.currentCol] = player.sprite; // Clear previous position
+      // testing facing position:
+      console.log(`Facing direction after move: ${player.facing}`);
       break;
     case "ArrowDown":
       currentChunk[player.currentRow][player.currentCol] = player.standingOn; // Clear previous position
@@ -70,6 +73,8 @@ function handlePlayerMovement(event: KeyboardEvent) {
       player.standingOn = currentChunk[player.currentRow][player.currentCol]; // Update standing
       player.facing = "down"; // Update facing direction
       currentChunk[player.currentRow][player.currentCol] = "@"; // Clear previous position
+      // testing facing position:
+      console.log(`Facing direction after move: ${player.facing}`);
       break;
     case "ArrowLeft":
       currentChunk[player.currentRow][player.currentCol] = player.standingOn; // Clear previous position
@@ -77,6 +82,8 @@ function handlePlayerMovement(event: KeyboardEvent) {
       player.standingOn = currentChunk[player.currentRow][player.currentCol]; // Update standing type
       player.facing = "left"; // Update facing direction
       currentChunk[player.currentRow][player.currentCol] = "@"; // Clear previous position
+      // testing facing position:
+      console.log(`Facing direction after move: ${player.facing}`);
       break;
     case "ArrowRight":
       currentChunk[player.currentRow][player.currentCol] = player.standingOn; // Clear previous position
@@ -84,6 +91,8 @@ function handlePlayerMovement(event: KeyboardEvent) {
       player.standingOn = currentChunk[player.currentRow][player.currentCol]; // Update standing type
       player.facing = "right"; // Update facing direction
       currentChunk[player.currentRow][player.currentCol] = "@"; // Clear previous position
+      // testing facing position:
+      console.log(`Facing direction after move: ${player.facing}`);
       break;
     default:
       console.log(`Key pressed: ${event.key}`);
