@@ -1,15 +1,22 @@
+import {
+  CELL_HEIGHT,
+  CELL_WIDTH,
+  GRID_HEIGHT,
+  GRID_WIDTH,
+} from "./constants/world-constants.js";
+
 console.log("Game starting...");
 console.log("Welcome to ASCII Survivor!");
 
 const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
 
-// Game constants:
-const GRID_WIDTH = 128; // Width of the grid in characters
-const GRID_HEIGHT = 40; // Height of the grid in characters
-const CELL_WIDTH = 10; // Width of each cell in pixels
-const CELL_HEIGHT = 18; // Height of each cell in pixels
+console.log("Canvas context:", ctx);
+console.log("Canvas dimensions:", canvas.width, canvas.height);
 
+if (ctx) {
+  ctx.fillStyle = "white";
+}
 // Player object:
 const player = {
   sprite: "@",
