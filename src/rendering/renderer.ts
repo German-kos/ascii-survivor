@@ -1,4 +1,4 @@
-import { CELL_WIDTH, CELL_HEIGHT } from "../constants/world-constants";
+import { CELL_WIDTH, CELL_HEIGHT } from "../constants/world-constants.js";
 
 export function renderChunk(ctx: CanvasRenderingContext2D, chunk: string[][]) {
   chunk.forEach((row, y) => {

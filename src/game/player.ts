@@ -1,4 +1,4 @@
-import { clearCanvas, renderChunk } from "../rendering/renderer";
+import { clearCanvas, renderChunk } from "../rendering/renderer.js";
 
 type Direction = "up" | "down" | "left" | "right";
 export class Player {
