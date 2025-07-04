@@ -17,7 +17,7 @@ export class Player {
     this.sprite = "@";
     this.x = 0;
     this.y = 0;
-    this.standingOn = "x"; // Default standing type
+    this.standingOn = "X"; // Default standing type
     this.facing = "left";
     this.maxHealth = 100;
     this.health = 100;
@@ -62,32 +62,32 @@ export class Player {
     // Handle movement
     switch (event.key) {
       case "ArrowUp":
-        currentChunk[this.x][this.y] = this.standingOn; // Clear previous position
-        this.x -= 1;
-        this.standingOn = currentChunk[this.x][this.y]; // Update standing type
+        currentChunk[this.y][this.x] = this.standingOn; // Clear previous position
+        this.y -= 1;
+        this.standingOn = currentChunk[this.y][this.x]; // Update standing type
         this.facing = "up"; // Update facing direction
-        currentChunk[this.x][this.y] = this.sprite; // Clear previous position
+        currentChunk[this.y][this.x] = this.sprite; // Clear previous position
         break;
       case "ArrowDown":
-        currentChunk[this.x][this.y] = this.standingOn; // Clear previous position
-        this.x += 1;
+        currentChunk[this.y][this.x] = this.standingOn; // Clear previous position
+        this.y += 1;
         this.standingOn = currentChunk[this.x][this.y]; // Update standing
         this.facing = "down"; // Update facing direction
-        currentChunk[this.x][this.y] = this.sprite; // Clear previous position
+        currentChunk[this.y][this.x] = this.sprite; // Clear previous position
         break;
       case "ArrowLeft":
-        currentChunk[this.x][this.y] = this.standingOn; // Clear previous position
-        this.y -= 1;
+        currentChunk[this.y][this.x] = this.standingOn; // Clear previous position
+        this.x -= 1;
         this.standingOn = currentChunk[this.x][this.y]; // Update standing type
         this.facing = "left"; // Update facing direction
-        currentChunk[this.x][this.y] = this.sprite; // Clear previous position
+        currentChunk[this.y][this.x] = this.sprite; // Clear previous position
         break;
       case "ArrowRight":
-        currentChunk[this.x][this.y] = this.standingOn; // Clear previous position
-        this.y += 1;
+        currentChunk[this.y][this.x] = this.standingOn; // Clear previous position
+        this.x += 1;
         this.standingOn = currentChunk[this.x][this.y]; // Update standing type
         this.facing = "right"; // Update facing direction
-        currentChunk[this.x][this.y] = this.sprite; // Clear previous position
+        currentChunk[this.y][this.x] = this.sprite; // Clear previous position
         break;
       default:
         console.log(`Key pressed: ${event.key}`);
