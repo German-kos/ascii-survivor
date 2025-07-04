@@ -10,6 +10,10 @@ const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
 const player = new Player();
 
+if (ctx) {
+  ctx.fillStyle = "white";
+}
+
 // Chunk grid, initialized with empty arrays:
 const currentChunk: string[][] = [];
 for (let y = 0; y < GRID_HEIGHT; y++) {
