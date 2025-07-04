@@ -71,21 +71,21 @@ export class Player {
       case "ArrowDown":
         currentChunk[this.y][this.x] = this.standingOn; // Clear previous position
         this.y += 1;
-        this.standingOn = currentChunk[this.x][this.y]; // Update standing
+        this.standingOn = currentChunk[this.y][this.x]; // Update standing
         this.facing = "down"; // Update facing direction
         currentChunk[this.y][this.x] = this.sprite; // Clear previous position
         break;
       case "ArrowLeft":
         currentChunk[this.y][this.x] = this.standingOn; // Clear previous position
         this.x -= 1;
-        this.standingOn = currentChunk[this.x][this.y]; // Update standing type
+        this.standingOn = currentChunk[this.y][this.x]; // Update standing type
         this.facing = "left"; // Update facing direction
         currentChunk[this.y][this.x] = this.sprite; // Clear previous position
         break;
       case "ArrowRight":
         currentChunk[this.y][this.x] = this.standingOn; // Clear previous position
         this.x += 1;
-        this.standingOn = currentChunk[this.x][this.y]; // Update standing type
+        this.standingOn = currentChunk[this.y][this.x]; // Update standing type
         this.facing = "right"; // Update facing direction
         currentChunk[this.y][this.x] = this.sprite; // Clear previous position
         break;
