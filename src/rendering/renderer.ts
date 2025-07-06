@@ -68,3 +68,17 @@ function getTileColor(tile: string): string {
   ) as keyof typeof TILE_COLORS | undefined;
   return tileKey ? TILE_COLORS[tileKey] : "white"; // Default to white if no color is found
 }
+
+export function rerenderWorld(
+  ctx: CanvasRenderingContext2D,
+  chunk: string[][],
+  player: Player
+) {
+  clearCanvas(ctx, ctx.canvas);
+  // TODO: Add render background here when implemented
+  renderChunk(ctx, chunk, {
+    playerX: player.x,
+    playerY: player.y,
+  });
+  renderPlayer(ctx, chunk, player);
+}
