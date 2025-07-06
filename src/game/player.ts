@@ -1,19 +1,14 @@
-import {
-  clearCanvas,
-  renderChunk,
-  renderPlayer,
-} from "../rendering/renderer.js";
+import { rerenderWorld } from "../rendering/renderer.js";
 
 type Direction = "up" | "down" | "left" | "right";
 export class Player {
   sprite: string;
   x: number;
   y: number;
-  // standingOn: string; // What block the player is standing on
   facing: Direction;
   maxHealth: number;
   health: number;
-  inventory: string[]; // Inventory of the player
+  inventory: string[];
   level: number;
 
   constructor() {
@@ -21,7 +16,6 @@ export class Player {
     this.x = 0;
     this.y = 0;
     this.facing = "left";
-    // this.standingOn = ".";
     this.maxHealth = 100;
     this.health = 100;
     this.inventory = [];
@@ -33,9 +27,9 @@ export class Player {
     this.sprite = saveData.sprite || this.sprite;
     this.x = saveData.x || this.x;
     this.y = saveData.y || this.y;
-    // this.standingOn = saveData.standingOn || this.standingOn;
     this.facing = saveData.facing || this.facing;
-    // this.chunk = saveData.chunk || this.chunk; // Layer implementation
+    //  Later implementation
+    // this.chunk = saveData.chunk || this.chunk;
     this.maxHealth = saveData.maxHealth || this.maxHealth;
     this.health = saveData.health || this.health;
     this.inventory = saveData.inventory || this.inventory;
@@ -44,64 +38,52 @@ export class Player {
 
   move(direction: Direction) {}
 
-  // Player movement:
-  handleMove(
+  movePlayer(
     event: KeyboardEvent,
     currentChunk: string[][],
     ctx: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement
   ) {
-    // Prevent going out of bounds
-    if (
-      (this.y <= 0 && event.key === "ArrowUp") ||
-      (this.y >= currentChunk.length - 1 && event.key === "ArrowDown") ||
-      (this.x <= 0 && event.key === "ArrowLeft") ||
-      (this.x >= currentChunk[0].length - 1 && event.key === "ArrowRight")
-    ) {
-      console.log("I cannot move that way!");
+    if (!this.canPlayerMove(event.key, currentChunk)) {
       return;
     }
-
-    // TODO: move this to 4 separate private methods and maybe 4 if statements instead
-    // Handle movement
-
+    // TODO: Change to 4 if statements (?)
     switch (event.key) {
       case "ArrowUp":
-        // currentChunk[this.y][this.x] = this.standingOn; // Clear previous position
         this.y -= 1;
-        // this.standingOn = currentChunk[this.y][this.x]; // Update standing type
-        this.facing = "up"; // Update facing direction
-        // currentChunk[this.y][this.x] = this.sprite; // Clear previous position
+        this.facing = "up";
         break;
       case "ArrowDown":
-        // currentChunk[this.y][this.x] = this.standingOn; // Clear previous position
         this.y += 1;
-        // this.standingOn = currentChunk[this.y][this.x]; // Update standing
-        this.facing = "down"; // Update facing direction
-        // currentChunk[this.y][this.x] = this.sprite; // Clear previous position
+        this.facing = "down";
         break;
       case "ArrowLeft":
-        // currentChunk[this.y][this.x] = this.standingOn; // Clear previous position
         this.x -= 1;
-        // this.standingOn = currentChunk[this.y][this.x]; // Update standing type
-        this.facing = "left"; // Update facing direction
-        // currentChunk[this.y][this.x] = this.sprite; // Clear previous position
+        this.facing = "left";
         break;
       case "ArrowRight":
-        // currentChunk[this.y][this.x] = this.standingOn; // Clear previous position
         this.x += 1;
-        // this.standingOn = currentChunk[this.y][this.x]; // Update standing type
-        this.facing = "right"; // Update facing direction
-        // currentChunk[this.y][this.x] = this.sprite; // Clear previous position
+        this.facing = "right";
         break;
       default:
         console.log(`Key pressed: ${event.key}`);
     }
-    clearCanvas(ctx, canvas);
-    renderChunk(ctx, currentChunk, {
-      playerX: this.x,
-      playerY: this.y,
-    });
-    renderPlayer(ctx, currentChunk, this);
+    rerenderWorld(ctx, currentChunk, this);
+  }
+
+  private canPlayerMove(
+    key: KeyboardEvent["key"],
+    currentChunk: string[][]
+  ): boolean {
+    if (
+      (this.y <= 0 && key === "ArrowUp") ||
+      (this.y >= currentChunk.length - 1 && key === "ArrowDown") ||
+      (this.x <= 0 && key === "ArrowLeft") ||
+      (this.x >= currentChunk[0].length - 1 && key === "ArrowRight")
+    ) {
+      console.log("I cannot move that way!");
+      return false;
+    }
+    return true;
   }
 }
