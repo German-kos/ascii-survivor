@@ -1,3 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 #gameCanvas {
   background-color: black;
+  display: block; /* This removes inline spacing */
+  margin: 0;
+  padding: 0;
 }
