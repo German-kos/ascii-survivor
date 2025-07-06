@@ -41,7 +41,7 @@ if (ctx) {
   console.log("Finished drawing grid");
 
   addEventListener("keydown", (event) => {
-    player.handleMove(event, currentChunk, ctx, canvas);
+    player.movePlayer(event, currentChunk, ctx, canvas);
     console.log("Player moved");
   });
 }
