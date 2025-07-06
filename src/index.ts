@@ -1,7 +1,12 @@
 import { CANVAS_SIZE } from "./constants/world-constants.js";
 import { initializeDemoChunk } from "./game/grid-initializers.js";
 import { Player } from "./game/player.js";
-import { renderChunk, renderPlayer } from "./rendering/renderer.js";
+import {
+  renderBackground,
+  renderChunk,
+  renderPlayer,
+  rerenderWorld,
+} from "./rendering/renderer.js";
 // end of imports!
 
 // TODO: Try to integrate colors for different types of blocks.
@@ -16,8 +21,7 @@ if (ctx) {
 
   console.log("Finished setting up canvas");
 
-  renderChunk(ctx, currentChunk);
-  renderPlayer(ctx, player);
+  rerenderWorld(ctx, currentChunk, player);
 
   console.log("Finished drawing grid");
 
