@@ -84,7 +84,7 @@ function getTileBackground(tile: string): string {
   return tileKey ? TILE_BACKGROUNDS[tileKey] : "white";
 }
 
-export function rerenderWorld(
+export function renderWorld(
   ctx: CanvasRenderingContext2D,
   chunk: string[][],
   player: Player

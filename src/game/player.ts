@@ -1,4 +1,4 @@
-import { rerenderWorld } from "../rendering/renderer.js";
+import { renderWorld } from "../rendering/renderer.js";
 
 type Direction = "up" | "down" | "left" | "right";
 export class Player {
@@ -68,7 +68,7 @@ export class Player {
       default:
         console.log(`Key pressed: ${event.key}`);
     }
-    rerenderWorld(ctx, currentChunk, this);
+    renderWorld(ctx, currentChunk, this);
   }
 
   private canPlayerMove(
