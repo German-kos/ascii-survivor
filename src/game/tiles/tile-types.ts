@@ -1,0 +1,1 @@
+// Declare configs for tile types for the factory
