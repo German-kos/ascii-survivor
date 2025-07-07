@@ -1,4 +1,4 @@
-import { TileConfig } from "./tile-types.js";
+import { TileConfig } from "./index";
 
 export const TILE_CONFIG: Record<string, TileConfig> = {
   empty: {
