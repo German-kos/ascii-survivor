@@ -4,6 +4,7 @@ import { TileConfig } from "./tiles/index.js";
 type Direction = "up" | "down" | "left" | "right";
 export class Player {
   sprite: string;
+  color: string;
   x: number;
   y: number;
   facing: Direction;
@@ -13,7 +14,8 @@ export class Player {
   level: number;
 
   constructor() {
-    this.sprite = "@";
+    this.sprite = "☺";
+    this.color = "#ffff00";
     this.x = 0;
     this.y = 0;
     this.facing = "left";
@@ -45,7 +47,7 @@ export class Player {
     ctx: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement
   ) {
-    if (!this.canPlayerMove(event.key, currentChunk)) {
+    if (!this.checkForWorldBorder(event.key, currentChunk)) {
       return;
     }
     // TODO: Change to 4 if statements (?)
@@ -95,7 +97,7 @@ export class Player {
     renderWorld(ctx, currentChunk, this);
   }
 
-  private canPlayerMove(
+  private checkForWorldBorder(
     key: KeyboardEvent["key"],
     currentChunk: TileConfig[][]
   ): boolean {
