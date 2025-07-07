@@ -3,7 +3,12 @@ import {
   GRID_WIDTH,
   TILE_CHARS,
 } from "../constants/world-constants.js";
-import { TILE_CONFIG, TileConfig } from "./tiles/index.js";
+import {
+  createTile,
+  TILE_CONFIG,
+  TileConfig,
+  TileType,
+} from "./tiles/index.js";
 
 export function initializeDemoChunk(): string[][] {
   const chunk: string[][] = [];
@@ -32,19 +37,22 @@ export function generateDemoChunk(): TileConfig[][] {
     chunk[y] = new Array(GRID_WIDTH).fill("●"); // Default to rock
   }
 
-  const keys = Object.keys(TILE_CONFIG);
+  const keys = Object.keys(TILE_CONFIG).filter(
+    (key): key is TileType =>
+      typeof TILE_CONFIG[key as TileType] !== "undefined"
+  );
 
   for (let y = 0; y < GRID_HEIGHT; y++) {
     for (let x = 0; x < GRID_WIDTH; x++) {
       if (y <= 5 && x <= 5) {
-        chunk[y][x] = TILE_CONFIG["grass"];
-      } else {
-        const key = keys[
-          Math.floor(Math.random() * keys.length)
-        ] as keyof typeof TILE_CHARS;
+        chunk[y][x] = createTile("grass");
         // console.log("Random key:", key);
         // console.log("TILE_CHARS[key]:", TILE_CHARS[key]);
-        chunk[y][x] = TILE_CONFIG[key] || TILE_CONFIG.EMPTY;
+        // console.log("TILE_CHARS[key]:", TILE_CHARS[key]);
+        // chunk[y][x] = createTile(key) || TILE_CONFIG.EMPTY;
+      } else {
+        const key = keys[Math.floor(Math.random() * keys.length)] as TileType;
+        chunk[y][x] = createTile(key) || TILE_CONFIG.EMPTY;
       }
     }
   }
