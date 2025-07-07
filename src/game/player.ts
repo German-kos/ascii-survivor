@@ -1,4 +1,5 @@
 import { renderWorld } from "../rendering/renderer.js";
+import { TileConfig } from "./tiles/index.js";
 
 type Direction = "up" | "down" | "left" | "right";
 export class Player {
@@ -40,7 +41,7 @@ export class Player {
 
   movePlayer(
     event: KeyboardEvent,
-    currentChunk: string[][],
+    currentChunk: TileConfig[][],
     ctx: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement
   ) {
@@ -50,30 +51,53 @@ export class Player {
     // TODO: Change to 4 if statements (?)
     switch (event.key) {
       case "ArrowUp":
+        if (!this.isTileWalkable(currentChunk[this.y - 1][this.x])) {
+          console.log(
+            "I cannot walk, there's a " + currentChunk[this.y - 1][this.x].type
+          );
+          return;
+        }
         this.y -= 1;
         this.facing = "up";
         break;
       case "ArrowDown":
+        if (!this.isTileWalkable(currentChunk[this.y + 1][this.x])) {
+          console.log(
+            "I cannot walk, there's a " + currentChunk[this.y + 1][this.x].type
+          );
+          return;
+        }
         this.y += 1;
         this.facing = "down";
         break;
       case "ArrowLeft":
+        if (!this.isTileWalkable(currentChunk[this.y][this.x - 1])) {
+          console.log(
+            "I cannot walk, there's a " + currentChunk[this.y][this.x - 1].type
+          );
+          return;
+        }
         this.x -= 1;
         this.facing = "left";
         break;
       case "ArrowRight":
+        if (!this.isTileWalkable(currentChunk[this.y][this.x + 1])) {
+          console.log(
+            "I cannot walk, there's a " + currentChunk[this.y][this.x + 1].type
+          );
+          return;
+        }
         this.x += 1;
         this.facing = "right";
         break;
       default:
-        console.log(`Key pressed: ${event.key}`);
     }
     renderWorld(ctx, currentChunk, this);
   }
 
   private canPlayerMove(
     key: KeyboardEvent["key"],
-    currentChunk: string[][]
+    currentChunk: TileConfig[][]
   ): boolean {
     if (
       (this.y <= 0 && key === "ArrowUp") ||
@@ -85,5 +109,9 @@ export class Player {
       return false;
     }
     return true;
+  }
+
+  private isTileWalkable(tile: TileConfig): boolean {
+    return tile.walkable;
   }
 }

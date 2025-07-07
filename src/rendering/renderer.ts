@@ -7,10 +7,11 @@ import {
   TILE_BACKGROUNDS,
 } from "../constants/world-constants.js";
 import { Player } from "../game/player.js";
+import { TileConfig } from "../game/tiles/index.js";
 
 export function renderChunk(
   ctx: CanvasRenderingContext2D,
-  chunk: string[][],
+  chunk: TileConfig[][],
   playerPosition?: { playerX: number; playerY: number }
 ) {
   chunk.forEach((row, y) => {
@@ -22,9 +23,9 @@ export function renderChunk(
       ctx.font = FONT;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillStyle = getTileColor(cell);
+      ctx.fillStyle = cell.color;
       ctx.fillText(
-        cell,
+        cell.sprite,
         x * CELL_WIDTH + CELL_WIDTH,
         y * CELL_HEIGHT + CELL_HEIGHT
       );
@@ -34,14 +35,14 @@ export function renderChunk(
 
 export function renderBackground(
   ctx: CanvasRenderingContext2D,
-  chunk: string[][]
+  chunk: TileConfig[][]
 ) {
   chunk.forEach((row, y) => {
     row.forEach((cell, x) => {
       ctx.font = FONT;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillStyle = getTileBackground(cell);
+      ctx.fillStyle = cell.background;
       ctx.fillRect(
         x * CELL_WIDTH + CELL_WIDTH * 0.5,
         y * CELL_HEIGHT + CELL_HEIGHT * 0.5,
@@ -86,11 +87,10 @@ function getTileBackground(tile: string): string {
 
 export function renderWorld(
   ctx: CanvasRenderingContext2D,
-  chunk: string[][],
+  chunk: TileConfig[][],
   player: Player
 ) {
   clearCanvas(ctx, ctx.canvas);
-  // TODO: Add render background here when implemented
   renderBackground(ctx, chunk);
   renderChunk(ctx, chunk, {
     playerX: player.x,
