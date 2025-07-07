@@ -1,1 +1,7 @@
-// TODO: Create a tile factory that generates tiles based on type and properties
+import { TILE_CONFIG, TileType } from "./index.js";
+
+export function createTile(tileType: TileType) {
+  const config = TILE_CONFIG[tileType];
+
+  return { ...config };
+}
