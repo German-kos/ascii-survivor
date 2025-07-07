@@ -15,7 +15,7 @@ export interface TileConfig {
   toolLevelRequired: ToolLevel;
 }
 
-type TileType =
+export type TileType =
   | "empty"
   | "wall"
   | "tree"
@@ -25,7 +25,7 @@ type TileType =
   | "flower";
 
 type TileSprite = "." | "█" | "♠" | "≈" | "●" | "▓" | "*";
-``;
+
 type ToolLevel = "none" | "basic" | "advanced" | "expert" | "master";
 
 type ToolType =
