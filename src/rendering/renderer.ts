@@ -1,5 +1,6 @@
 import { CELL_WIDTH, CELL_HEIGHT, FONT } from "../constants/world-constants.js";
-import { Player } from "../game/player.js";
+import { InteractiveCursor } from "../game/player/interactive-cursor.js";
+import { Player } from "../game/player/player.js";
 import { TileConfig } from "../game/tiles/index.js";
 
 export function clearCanvas(
@@ -71,7 +72,8 @@ function renderPlayer(ctx: CanvasRenderingContext2D, player: Player) {
 export function renderWorld(
   ctx: CanvasRenderingContext2D,
   chunk: TileConfig[][],
-  player: Player
+  player: Player,
+  cursor: InteractiveCursor
 ) {
   clearCanvas(ctx, ctx.canvas);
   renderBackground(ctx, chunk);
@@ -80,6 +82,7 @@ export function renderWorld(
     playerY: player.y,
   });
   renderPlayer(ctx, player);
+  renderInteractiveCursor(ctx, cursor.targetX, cursor.targetY, player.color);
 }
 
 function drawGrassTile(
@@ -116,4 +119,40 @@ function drawWallTile(
 ) {
   ctx.fillStyle = cell.color;
   ctx.fillRect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+}
+
+// export function renderInteractiveCursor(
+//   ctx: CanvasRenderingContext2D,
+//   cursorX: number,
+//   cursorY: number,
+//   color: string = "#ffff00"
+// ) {
+//   ctx.fillStyle = color;
+//   ctx.fillRect(
+//     cursorX * CELL_WIDTH,
+//     cursorY * CELL_HEIGHT,
+//     CELL_WIDTH,
+//     CELL_HEIGHT
+//   );
+// }
+
+export function renderInteractiveCursor(
+  ctx: CanvasRenderingContext2D,
+  cursorX: number,
+  cursorY: number,
+  color: string = "#ffff00"
+) {
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.globalAlpha = 0.5; // opacity
+
+  ctx.strokeRect(
+    cursorX * CELL_WIDTH,
+    cursorY * CELL_HEIGHT,
+    CELL_WIDTH,
+    CELL_HEIGHT
+  );
+
+  // Reset alpha to avoid affecting other renders
+  ctx.globalAlpha = 1.0;
 }
