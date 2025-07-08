@@ -20,14 +20,22 @@ function renderChunk(
         //skip rendering the block under the player
         return;
       }
+      if (cell.type === "wall") {
+        drawWallTile(ctx, cell, x, y);
+        return;
+      }
+      if (cell.type === "grass") {
+        drawGrassTile(ctx, cell, x, y);
+        return;
+      }
       ctx.font = FONT;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = cell.color;
       ctx.fillText(
         cell.sprite,
-        x * CELL_WIDTH + CELL_WIDTH,
-        y * CELL_HEIGHT + CELL_HEIGHT
+        x * CELL_WIDTH + CELL_WIDTH * 0.5,
+        y * CELL_HEIGHT + CELL_HEIGHT * 0.5
       );
     });
   });
@@ -43,12 +51,7 @@ function renderBackground(
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = cell.background;
-      ctx.fillRect(
-        x * CELL_WIDTH + CELL_WIDTH * 0.5,
-        y * CELL_HEIGHT + CELL_HEIGHT * 0.5,
-        CELL_WIDTH,
-        CELL_HEIGHT
-      );
+      ctx.fillRect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
     });
   });
 }
@@ -60,8 +63,8 @@ function renderPlayer(ctx: CanvasRenderingContext2D, player: Player) {
   ctx.textBaseline = "middle";
   ctx.fillText(
     player.sprite,
-    player.x * CELL_WIDTH + CELL_WIDTH,
-    player.y * CELL_HEIGHT + CELL_HEIGHT
+    player.x * CELL_WIDTH + CELL_WIDTH * 0.5,
+    player.y * CELL_HEIGHT + CELL_HEIGHT * 0.5
   );
 }
 
@@ -77,4 +80,40 @@ export function renderWorld(
     playerY: player.y,
   });
   renderPlayer(ctx, player);
+}
+
+function drawGrassTile(
+  ctx: CanvasRenderingContext2D,
+  tile: TileConfig,
+  x: number,
+  y: number
+) {
+  const cellX = x * CELL_WIDTH;
+  const cellY = y * CELL_HEIGHT;
+
+  ctx.save();
+
+  const scaleX = CELL_WIDTH / 9.5; // Adjust based on character width
+  const scaleY = CELL_HEIGHT / 18; // Adjust based on character height
+
+  ctx.scale(scaleX, scaleY);
+
+  ctx.fillStyle = tile.color;
+  ctx.font = "16px 'Courier New', monospace";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+
+  ctx.fillText(tile.sprite, cellX / scaleX, cellY / scaleY);
+
+  ctx.restore();
+}
+
+function drawWallTile(
+  ctx: CanvasRenderingContext2D,
+  cell: TileConfig,
+  x: number,
+  y: number
+) {
+  ctx.fillStyle = cell.color;
+  ctx.fillRect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
 }
