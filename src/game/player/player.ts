@@ -1,5 +1,5 @@
-import { renderWorld } from "../rendering/renderer.js";
-import { TileConfig } from "./tiles/index.js";
+import { renderWorld } from "../../rendering/renderer";
+import { TileConfig } from "../tiles/index";
 
 type Direction = "up" | "down" | "left" | "right";
 export class Player {
