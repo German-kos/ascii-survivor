@@ -1,5 +1,7 @@
-import { renderWorld } from "../../rendering/renderer";
-import { TileConfig } from "../tiles/index";
+import { renderWorld } from "../../rendering/renderer.js";
+import { TileConfig } from "../tiles/index.js";
+import { handleInteraction } from "./interaction-handler.js";
+import { InteractiveCursor } from "./interactive-cursor.js";
 
 type Direction = "up" | "down" | "left" | "right";
 export class Player {
@@ -21,7 +23,7 @@ export class Player {
     this.facing = "left";
     this.maxHealth = 100;
     this.health = 100;
-    this.inventory = [];
+    this.inventory = ["axe", "sickle", "pickaxe"];
     this.level = 1;
   }
 
@@ -45,14 +47,15 @@ export class Player {
     event: KeyboardEvent,
     currentChunk: TileConfig[][],
     ctx: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement
+    cursor: InteractiveCursor
   ) {
     if (!this.checkForWorldBorder(event.key, currentChunk)) {
       return;
     }
     // TODO: Change to 4 if statements (?)
     switch (event.key) {
-      case "ArrowUp":
+      case "W":
+      case "w":
         if (!this.isTileWalkable(currentChunk[this.y - 1][this.x])) {
           console.log(
             "I cannot walk, there's a " + currentChunk[this.y - 1][this.x].type
@@ -61,8 +64,10 @@ export class Player {
         }
         this.y -= 1;
         this.facing = "up";
+        cursor.moveUpWithPlayer(this);
         break;
-      case "ArrowDown":
+      case "S":
+      case "s":
         if (!this.isTileWalkable(currentChunk[this.y + 1][this.x])) {
           console.log(
             "I cannot walk, there's a " + currentChunk[this.y + 1][this.x].type
@@ -71,8 +76,10 @@ export class Player {
         }
         this.y += 1;
         this.facing = "down";
+        cursor.moveDownWithPlayer(this);
         break;
-      case "ArrowLeft":
+      case "A":
+      case "a":
         if (!this.isTileWalkable(currentChunk[this.y][this.x - 1])) {
           console.log(
             "I cannot walk, there's a " + currentChunk[this.y][this.x - 1].type
@@ -81,8 +88,10 @@ export class Player {
         }
         this.x -= 1;
         this.facing = "left";
+        cursor.moveLeftWithPlayer(this);
         break;
-      case "ArrowRight":
+      case "D":
+      case "d":
         if (!this.isTileWalkable(currentChunk[this.y][this.x + 1])) {
           console.log(
             "I cannot walk, there's a " + currentChunk[this.y][this.x + 1].type
@@ -91,10 +100,14 @@ export class Player {
         }
         this.x += 1;
         this.facing = "right";
+        cursor.moveRightWithPlayer(this);
+        break;
+      case " ":
+        handleInteraction(currentChunk, this, cursor, ctx);
         break;
       default:
     }
-    renderWorld(ctx, currentChunk, this);
+    renderWorld(ctx, currentChunk, this, cursor);
   }
 
   private checkForWorldBorder(
@@ -102,10 +115,10 @@ export class Player {
     currentChunk: TileConfig[][]
   ): boolean {
     if (
-      (this.y <= 0 && key === "ArrowUp") ||
-      (this.y >= currentChunk.length - 1 && key === "ArrowDown") ||
-      (this.x <= 0 && key === "ArrowLeft") ||
-      (this.x >= currentChunk[0].length - 1 && key === "ArrowRight")
+      (this.y <= 0 && key.toLowerCase() === "w") ||
+      (this.y >= currentChunk.length - 1 && key.toLowerCase() === "s") ||
+      (this.x <= 0 && key.toLowerCase() === "a") ||
+      (this.x >= currentChunk[0].length - 1 && key.toLowerCase() === "d")
     ) {
       console.log("I cannot move that way!");
       return false;
