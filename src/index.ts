@@ -16,6 +16,6 @@ if (ctx) {
   renderWorld(ctx, currentChunk, player, cursor);
   addEventListener("keydown", (event) => {
     player.movePlayer(event, currentChunk, ctx, cursor);
-    cursor.cursorControls(event, player, ctx, currentChunk);
+    cursor.handleInput(event, player, ctx, currentChunk);
   });
 }
