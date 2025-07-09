@@ -1,6 +1,5 @@
 import { renderWorld } from "../../rendering/renderer.js";
 import { TileConfig } from "../tiles/index.js";
-import { handleInteraction } from "./interaction-handler.js";
 import { InteractiveCursor } from "./interactive-cursor.js";
 
 type Direction = "up" | "down" | "left" | "right";
@@ -53,58 +52,77 @@ export class Player {
       return;
     }
     // TODO: Change to 4 if statements (?)
-    switch (event.key) {
-      case "W":
-      case "w":
+    switch (event.code) {
+      case "KeyW":
+        this.facing = "up";
         if (!this.isTileWalkable(currentChunk[this.y - 1][this.x])) {
           console.log(
             "I cannot walk, there's a " + currentChunk[this.y - 1][this.x].type
           );
+          cursor.cursorLocked && cursor.moveToFacingDirection(this);
           return;
         }
         this.y -= 1;
-        this.facing = "up";
-        cursor.moveUpWithPlayer(this);
+        if (cursor.cursorLocked) {
+          cursor.moveToFacingDirection(this);
+        } else {
+          cursor.moveUpWithPlayer(this);
+        }
         break;
-      case "S":
-      case "s":
+      case "KeyS":
+        this.facing = "down";
         if (!this.isTileWalkable(currentChunk[this.y + 1][this.x])) {
           console.log(
             "I cannot walk, there's a " + currentChunk[this.y + 1][this.x].type
           );
+          cursor.cursorLocked && cursor.moveToFacingDirection(this);
           return;
         }
         this.y += 1;
-        this.facing = "down";
-        cursor.moveDownWithPlayer(this);
+        if (cursor.cursorLocked) {
+          cursor.moveToFacingDirection(this);
+        } else {
+          cursor.moveDownWithPlayer(this);
+        }
         break;
-      case "A":
-      case "a":
+      case "KeyA":
+        this.facing = "left";
+
         if (!this.isTileWalkable(currentChunk[this.y][this.x - 1])) {
           console.log(
             "I cannot walk, there's a " + currentChunk[this.y][this.x - 1].type
           );
+          cursor.cursorLocked && cursor.moveToFacingDirection(this);
+
           return;
         }
         this.x -= 1;
-        this.facing = "left";
-        cursor.moveLeftWithPlayer(this);
+        if (cursor.cursorLocked) {
+          cursor.moveToFacingDirection(this);
+        } else {
+          cursor.moveLeftWithPlayer(this);
+        }
         break;
-      case "D":
-      case "d":
+      case "KeyD":
+        this.facing = "right";
+
         if (!this.isTileWalkable(currentChunk[this.y][this.x + 1])) {
           console.log(
             "I cannot walk, there's a " + currentChunk[this.y][this.x + 1].type
           );
+          cursor.cursorLocked && cursor.moveToFacingDirection(this);
+
           return;
         }
+
         this.x += 1;
-        this.facing = "right";
-        cursor.moveRightWithPlayer(this);
+        if (cursor.cursorLocked) {
+          cursor.moveToFacingDirection(this);
+        } else {
+          cursor.moveRightWithPlayer(this);
+        }
         break;
-      case " ":
-        handleInteraction(currentChunk, this, cursor, ctx);
-        break;
+
       default:
     }
     renderWorld(ctx, currentChunk, this, cursor);
