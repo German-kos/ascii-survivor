@@ -1,5 +1,3 @@
-import { CursorColor } from "./types.js";
-
 export const FONT = "bold 24px 'Courier New', monospace";
 export const GRID_WIDTH = 40;
 export const GRID_HEIGHT = 25;
