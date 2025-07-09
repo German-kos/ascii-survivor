@@ -1,4 +1,4 @@
-import { GRID_HEIGHT, GRID_WIDTH } from "../constants/world-constants.js";
+import { GRID_HEIGHT, GRID_WIDTH } from "../constants/constants.js";
 import {
   createTile,
   TILE_CONFIG,

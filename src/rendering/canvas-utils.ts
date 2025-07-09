@@ -1,4 +1,4 @@
-import { CANVAS_SIZE } from "../constants/world-constants.js";
+import { CANVAS_SIZE } from "../constants/constants.js";
 
 export function configureCanvas(canvas: HTMLCanvasElement): void {
   canvas.width = CANVAS_SIZE.WIDTH;
