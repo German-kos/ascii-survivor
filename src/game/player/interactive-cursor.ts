@@ -1,65 +1,91 @@
-import {
-  renderWorld,
-} from "../../rendering/renderer.js";
+import { renderWorld } from "../../rendering/renderer.js";
 import { TileConfig } from "../tiles/index.js";
+import { handleInteraction } from "./interaction-handler.js";
 import { Player } from "./player.js";
+
+// TODO: implement free cursor toggle
+
+type CursorColor = "#ffff00" | "#ff0000";
 
 export class InteractiveCursor {
   playerRef: Player;
   targetX: number;
   targetY: number;
-  color: string;
+  cursorLocked: boolean;
+  color: CursorColor; // Yellow when locked, red when unlocked
 
   constructor(playerRef: Player) {
     this.playerRef = playerRef;
     this.targetX = playerRef.x;
     this.targetY = playerRef.y;
-    this.color = "#ffff00";
+    this.cursorLocked = true;
+    this.color = this.cursorLocked ? "#ff0000" : "#ffff00";
   }
 
-  moveCursor(
+  cursorControls(
     event: KeyboardEvent,
-    playerRef: Player,
+    player: Player,
     ctx: CanvasRenderingContext2D,
     currentChunk: TileConfig[][]
   ) {
-    switch (event.key) {
+    switch (event.code) {
       case "ArrowUp":
-        if (this.canMoveCursorUp(playerRef)) {
+        if (this.canMoveCursorUp(player)) {
+          // if (this.cursorLocked) {
+          //   this.moveToFacingDirection(player);
+          //   console.log(player.facing);
+          // } else {
           this.targetY -= 1;
+          // }
         }
         break;
       case "ArrowDown":
-        if (this.canMoveCursorDown(playerRef)) {
+        if (this.canMoveCursorDown(player)) {
+          // if (this.cursorLocked) {
+          //   this.moveToFacingDirection(player);
+          //   console.log(player.facing);
+          // } else {
           this.targetY += 1;
+          // }
         }
         break;
       case "ArrowLeft":
-        if (this.canMoveCursorLeft(playerRef)) {
+        if (this.canMoveCursorLeft(player)) {
+          // if (this.cursorLocked) {
+          // this.moveToFacingDirection(player);
+          // console.log(player.facing);
+          // } else {
           this.targetX -= 1;
+          // }
         }
         break;
       case "ArrowRight":
-        if (this.canMoveCursorRight(playerRef)) {
+        if (this.canMoveCursorRight(player)) {
+          // if (this.cursorLocked) {
+          // this.moveToFacingDirection(player);
+          // console.log(player.facing);
+          // } else {
           this.targetX += 1;
+          // }
         }
         break;
-      // when Spacebar is pressed
+      case "ControlLeft":
+      case "ControlRight":
+        this.cursorLocked = !this.cursorLocked;
+        if (this.cursorLocked) {
+          this.color = "#ff0000"; // Red when locked
+        } else {
+          this.color = "#ffff00"; // Yellow when unlocked
+        }
+        console.log(`Cursor locked: ${this.cursorLocked}`);
+        break;
+      case "Space":
+        handleInteraction(currentChunk, player, this, ctx);
+        break;
       default:
     }
-    renderWorld(ctx, currentChunk, playerRef, this);
+    renderWorld(ctx, currentChunk, player, this);
   }
-
-  //   private isWithinAllowedRange(): boolean {
-  //     return (
-  //       // cursor x is  smaller than player.x +1 and bigger than player.x -1
-  //       // cursor y is smaller than player.y +1 and bigger than player.y -1
-  //       this.targetX <= this.playerRef.x + 1 &&
-  //       this.targetX >= this.playerRef.x - 1 &&
-  //       this.targetY <= this.playerRef.y + 1 &&
-  //       this.targetY >= this.playerRef.y - 1
-  //     );
-  //   }
 
   private canMoveCursorUp(playerRef: Player): boolean {
     if (this.targetY > playerRef.y - 1) {
@@ -105,6 +131,29 @@ export class InteractiveCursor {
   }
   moveLeftWithPlayer(playerRef: Player) {
     this.targetX -= 1;
+  }
+
+  moveToFacingDirection(player: Player) {
+    switch (player.facing) {
+      case "up":
+        this.targetY = player.y - 1;
+        this.targetX = player.x;
+        break;
+      case "down":
+        this.targetY = player.y + 1;
+        this.targetX = player.x;
+        break;
+      case "left":
+        this.targetX = player.x - 1;
+        this.targetY = player.y;
+        break;
+      case "right":
+        this.targetX = player.x + 1;
+        this.targetY = player.y;
+        break;
+      default:
+        console.log("Unknown facing direction");
+    }
   }
 
   interactWithTarget(currentChunk: TileConfig[][], player: Player) {
