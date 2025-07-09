@@ -1,8 +1,8 @@
+import { Direction } from "../../constants/types.js";
 import { renderWorld } from "../../rendering/renderer.js";
 import { TileConfig } from "../tiles/index.js";
 import { InteractiveCursor } from "./interactive-cursor.js";
 
-type Direction = "up" | "down" | "left" | "right";
 export class Player {
   sprite: string;
   color: string;
@@ -26,6 +26,13 @@ export class Player {
     this.level = 1;
   }
 
+  private static MOVEMENT_DELTAS = {
+    up: { dx: 0, dy: -1 },
+    down: { dx: 0, dy: 1 },
+    left: { dx: -1, dy: 0 },
+    right: { dx: 1, dy: 0 },
+  } as const;
+
   // For later implementation
   loadFromSave(saveData: any) {
     this.sprite = saveData.sprite || this.sprite;
@@ -40,105 +47,66 @@ export class Player {
     this.level = saveData.level || this.level;
   }
 
-  move(direction: Direction) {}
-
   movePlayer(
     event: KeyboardEvent,
     currentChunk: TileConfig[][],
     ctx: CanvasRenderingContext2D,
     cursor: InteractiveCursor
   ) {
-    if (!this.checkForWorldBorder(event.key, currentChunk)) {
+    if (!this.checkForWorldBorder(event, currentChunk)) {
       return;
     }
-    // TODO: Change to 4 if statements (?)
+
+    let direction: Direction;
+
     switch (event.code) {
       case "KeyW":
         this.facing = "up";
-        if (!this.isTileWalkable(currentChunk[this.y - 1][this.x])) {
-          console.log(
-            "I cannot walk, there's a " + currentChunk[this.y - 1][this.x].type
-          );
-          cursor.cursorLocked && cursor.moveToFacingDirection(this);
-          return;
-        }
-        this.y -= 1;
-        if (cursor.cursorLocked) {
-          cursor.moveToFacingDirection(this);
-        } else {
-          cursor.moveUpWithPlayer(this);
-        }
+        direction = "up";
         break;
       case "KeyS":
         this.facing = "down";
-        if (!this.isTileWalkable(currentChunk[this.y + 1][this.x])) {
-          console.log(
-            "I cannot walk, there's a " + currentChunk[this.y + 1][this.x].type
-          );
-          cursor.cursorLocked && cursor.moveToFacingDirection(this);
-          return;
-        }
-        this.y += 1;
-        if (cursor.cursorLocked) {
-          cursor.moveToFacingDirection(this);
-        } else {
-          cursor.moveDownWithPlayer(this);
-        }
+        direction = "down";
         break;
       case "KeyA":
         this.facing = "left";
-
-        if (!this.isTileWalkable(currentChunk[this.y][this.x - 1])) {
-          console.log(
-            "I cannot walk, there's a " + currentChunk[this.y][this.x - 1].type
-          );
-          cursor.cursorLocked && cursor.moveToFacingDirection(this);
-
-          return;
-        }
-        this.x -= 1;
-        if (cursor.cursorLocked) {
-          cursor.moveToFacingDirection(this);
-        } else {
-          cursor.moveLeftWithPlayer(this);
-        }
+        direction = "left";
         break;
       case "KeyD":
         this.facing = "right";
-
-        if (!this.isTileWalkable(currentChunk[this.y][this.x + 1])) {
-          console.log(
-            "I cannot walk, there's a " + currentChunk[this.y][this.x + 1].type
-          );
-          cursor.cursorLocked && cursor.moveToFacingDirection(this);
-
-          return;
-        }
-
-        this.x += 1;
-        if (cursor.cursorLocked) {
-          cursor.moveToFacingDirection(this);
-        } else {
-          cursor.moveRightWithPlayer(this);
-        }
+        direction = "right";
         break;
-
       default:
+        return;
     }
+
+    const { dx, dy } = this.getMovementDelta(direction);
+    const newX = this.x + dx;
+    const newY = this.y + dy;
+
+    if (!this.isTileWalkable(currentChunk[newY][newX])) {
+      console.log(
+        `Tile at (${newX}, ${newY}) is not walkable, there's a ${currentChunk[newY][newX].name}`
+      );
+      cursor.locked && cursor.moveToFacingDirection(this);
+      return;
+    }
+    this.x = newX;
+    this.y = newY;
+    this.updateCursor(cursor, direction);
     renderWorld(ctx, currentChunk, this, cursor);
   }
 
   private checkForWorldBorder(
-    key: KeyboardEvent["key"],
+    event: KeyboardEvent,
     currentChunk: TileConfig[][]
   ): boolean {
     if (
-      (this.y <= 0 && key.toLowerCase() === "w") ||
-      (this.y >= currentChunk.length - 1 && key.toLowerCase() === "s") ||
-      (this.x <= 0 && key.toLowerCase() === "a") ||
-      (this.x >= currentChunk[0].length - 1 && key.toLowerCase() === "d")
+      (this.y <= 0 && event.code === "KeyW") ||
+      (this.y >= currentChunk.length - 1 && event.code === "KeyS") ||
+      (this.x <= 0 && event.code === "KeyA") ||
+      (this.x >= currentChunk[0].length - 1 && event.code === "KeyD")
     ) {
-      console.log("I cannot move that way!");
       return false;
     }
     return true;
@@ -146,5 +114,17 @@ export class Player {
 
   private isTileWalkable(tile: TileConfig): boolean {
     return tile.walkable;
+  }
+
+  private updateCursor(cursor: InteractiveCursor, direction: Direction) {
+    if (cursor.locked) {
+      cursor.moveToFacingDirection(this);
+    } else {
+      cursor.moveWithPlayer(direction);
+    }
+  }
+
+  private getMovementDelta(direction: Direction) {
+    return Player.MOVEMENT_DELTAS[direction];
   }
 }
