@@ -1,8 +1,10 @@
-export const FONT = "bold 16px 'Courier New', monospace";
+export const FONT = "bold 24px 'Courier New', monospace";
 export const GRID_WIDTH = 40;
 export const GRID_HEIGHT = 25;
-export const CELL_WIDTH = 16;
-export const CELL_HEIGHT = 16;
+// export const CELL_WIDTH = 16;
+// export const CELL_HEIGHT = 16;
+export const CELL_WIDTH = 24;
+export const CELL_HEIGHT = 24;
 export const CHUNK_WIDTH = GRID_WIDTH * CELL_WIDTH;
 export const CHUNK_HEIGHT = GRID_HEIGHT * CELL_HEIGHT;
 export const CANVAS_SIZE = {
