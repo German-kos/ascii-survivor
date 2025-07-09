@@ -82,7 +82,7 @@ export function renderWorld(
     playerY: player.y,
   });
   renderPlayer(ctx, player);
-  renderInteractiveCursor(ctx, cursor.targetX, cursor.targetY, player.color);
+  renderInteractiveCursor(ctx, cursor);
 }
 
 function drawGrassTile(
@@ -138,17 +138,15 @@ function drawWallTile(
 
 export function renderInteractiveCursor(
   ctx: CanvasRenderingContext2D,
-  cursorX: number,
-  cursorY: number,
-  color: string = "#ffff00"
+  cursor: InteractiveCursor
 ) {
-  ctx.strokeStyle = color;
+  ctx.strokeStyle = cursor.color;
   ctx.lineWidth = 2;
-  ctx.globalAlpha = 0.5; // opacity
+  ctx.globalAlpha = 0.5; //
 
   ctx.strokeRect(
-    cursorX * CELL_WIDTH,
-    cursorY * CELL_HEIGHT,
+    cursor.targetX * CELL_WIDTH,
+    cursor.targetY * CELL_HEIGHT,
     CELL_WIDTH,
     CELL_HEIGHT
   );
