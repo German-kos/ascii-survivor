@@ -16,6 +16,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     damage: 0,
     toolRequired: "none",
     toolLevelRequired: "none",
+    leavesBehind: "empty",
   },
   wall: {
     name: "Brick Wall",
@@ -32,6 +33,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     damage: 0,
     toolRequired: "pickaxe",
     toolLevelRequired: "basic",
+    leavesBehind: "dirt",
   },
   tree: {
     name: "Tree",
@@ -48,6 +50,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     damage: 0,
     toolRequired: "axe",
     toolLevelRequired: "basic",
+    leavesBehind: "dirt",
   },
   water: {
     name: "Water",
@@ -64,6 +67,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     damage: 0,
     toolRequired: "bucket",
     toolLevelRequired: "basic",
+    leavesBehind: "dirt", // Change to stump later
   },
   rock: {
     name: "Rock",
@@ -80,6 +84,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     damage: 0,
     toolRequired: "pickaxe",
     toolLevelRequired: "basic",
+    leavesBehind: "gravel",
   },
   grass: {
     name: "Grass",
@@ -88,14 +93,15 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     color: "#228B22", // Forest Green
     background: "#1a4d1a", // Dark forest green
     description: "A patch of grass.",
-    canBeDestroyed: false,
+    canBeDestroyed: true,
     canBeHarvested: true,
     harvestAmount: 1,
     walkable: true,
     health: 0,
     damage: 0,
-    toolRequired: "none",
+    toolRequired: "rake",
     toolLevelRequired: "none",
+    leavesBehind: "dirt",
   },
   flower: {
     name: "Flower",
@@ -104,7 +110,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     color: "#ff69b4", // Hot Pink
     background: "#2d1a2d", // Dark magenta
     description: "A beautiful flower.",
-    canBeDestroyed: false,
+    canBeDestroyed: true,
     canBeHarvested: true,
     harvestAmount: 1,
     walkable: true,
@@ -112,5 +118,40 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     damage: 0,
     toolRequired: "sickle",
     toolLevelRequired: "basic",
+    leavesBehind: "grass",
+  },
+  gravel: {
+    name: "Gravel",
+    type: "gravel",
+    sprite: "∴",
+    color: "#A0A0A0", // Dark Gray
+    background: "#404040", // Darker gray
+    description: "A patch of gravel.",
+    canBeDestroyed: true,
+    canBeHarvested: true,
+    harvestAmount: 1,
+    walkable: true,
+    health: 0,
+    damage: 0,
+    toolRequired: "shovel",
+    toolLevelRequired: "basic",
+    leavesBehind: "dirt",
+  },
+  dirt: {
+    name: "Dirt",
+    type: "dirt",
+    sprite: "∴",
+    color: "#4B3621", // Saddle Brown
+    background: "#271d13 ", // Dark brown
+    description: "A patch of dirt.",
+    canBeDestroyed: false,
+    canBeHarvested: true,
+    harvestAmount: 1,
+    walkable: true,
+    health: 0,
+    damage: 0,
+    toolRequired: "shovel",
+    toolLevelRequired: "basic",
+    leavesBehind: "empty",
   },
 };

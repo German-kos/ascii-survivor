@@ -13,6 +13,7 @@ export interface TileConfig {
   damage: number;
   toolRequired: ToolType;
   toolLevelRequired: ToolLevel;
+  leavesBehind: TileType;
 }
 
 export type TileType =
@@ -22,9 +23,11 @@ export type TileType =
   | "water"
   | "rock"
   | "grass"
-  | "flower";
+  | "flower"
+  | "gravel"
+  | "dirt";
 
-type TileSprite = "." | "█" | "♠" | "≈" | "●" | "▓" | "*";
+type TileSprite = "." | "█" | "♠" | "≈" | "●" | "▓" | "*" | "∴";
 
 type ToolLevel = "none" | "basic" | "advanced" | "expert" | "master";
 
@@ -35,4 +38,5 @@ type ToolType =
   | "shovel"
   | "hoe"
   | "sickle"
-  | "bucket";
+  | "bucket"
+  | "rake"
