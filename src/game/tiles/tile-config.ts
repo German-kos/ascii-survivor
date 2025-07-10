@@ -1,4 +1,4 @@
-import { TileConfig } from "./index";
+import { TileConfig } from "../../types/interfaces.js";
 
 export const TILE_CONFIG: Record<string, TileConfig> = {
   empty: {

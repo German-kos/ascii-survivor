@@ -1,9 +1,9 @@
 import { CursorColor, Direction } from "../../types/types.js";
 import { renderWorld } from "../../rendering/renderer.js";
-import { TileConfig } from "../tiles/index.js";
 import { handleInteraction } from "./interaction-handler.js";
 import { Player } from "./player.js";
-import { CURSOR_COLORS } from "../../constants/constants.js";
+import { CURSOR_COLORS } from "../../constants/rendering-constants.js";
+import { TileConfig } from "../../types/interfaces.js";
 
 export class InteractiveCursor {
   targetX: number;

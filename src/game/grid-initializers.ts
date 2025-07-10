@@ -1,8 +1,8 @@
-import { GRID_HEIGHT, GRID_WIDTH } from "../constants/constants.js";
+import { GRID_HEIGHT, GRID_WIDTH } from "../constants/rendering-constants.js";
+import { TileConfig } from "../types/interfaces.js";
 import {
   createTile,
   TILE_CONFIG,
-  TileConfig,
   TileType,
 } from "./tiles/index.js";
 

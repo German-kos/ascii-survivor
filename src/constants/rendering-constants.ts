@@ -1,4 +1,6 @@
 export const FONT = "bold 24px 'Courier New', monospace";
+export const CELL_WIDTH = 24;
+export const CELL_HEIGHT = 24;
 export const GRID_WIDTH = 40;
 export const GRID_HEIGHT = 25;
 
@@ -28,4 +30,3 @@ export const TILE_BACKGROUNDS = {
   GRASS: "#1a4d1a", // Dark forest green - rich soil
   FLOWER: "#2d1a2d", // Dark magenta - rich earth for flowers
 };
-

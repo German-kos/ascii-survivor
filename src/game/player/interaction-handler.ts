@@ -1,4 +1,5 @@
-import { createTile, TileConfig } from "../tiles/index.js";
+import { TileConfig } from "../../types/interfaces.js";
+import { createTile } from "../tiles/index.js";
 import { InteractiveCursor } from "./interactive-cursor.js";
 import { Player } from "./player.js";
 
