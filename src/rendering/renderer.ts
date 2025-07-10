@@ -22,7 +22,11 @@ function renderChunk(
         return;
       }
       if (cell.type === "wall") {
-        drawWallTile(ctx, cell, x, y);
+        drawFullTile(ctx, cell, x, y);
+        return;
+      }
+      if (cell.type === "dirt") {
+        drawFullTile(ctx, cell, x, y);
         return;
       }
       if (cell.type === "grass") {
@@ -111,7 +115,7 @@ function drawGrassTile(
   ctx.restore();
 }
 
-function drawWallTile(
+function drawFullTile(
   ctx: CanvasRenderingContext2D,
   cell: TileConfig,
   x: number,
@@ -120,21 +124,6 @@ function drawWallTile(
   ctx.fillStyle = cell.color;
   ctx.fillRect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
 }
-
-// export function renderInteractiveCursor(
-//   ctx: CanvasRenderingContext2D,
-//   cursorX: number,
-//   cursorY: number,
-//   color: string = "#ffff00"
-// ) {
-//   ctx.fillStyle = color;
-//   ctx.fillRect(
-//     cursorX * CELL_WIDTH,
-//     cursorY * CELL_HEIGHT,
-//     CELL_WIDTH,
-//     CELL_HEIGHT
-//   );
-// }
 
 export function renderInteractiveCursor(
   ctx: CanvasRenderingContext2D,
