@@ -1,5 +1,4 @@
-import { TileType } from "../game/tiles/index.js";
-import { Direction, TileSprite, ToolLevel, ToolType } from "./types.js";
+import { Direction, TileSprite, TileType, ToolLevel, ToolType } from "./types.js";
 
 export interface TileConfig {
   name: string;
