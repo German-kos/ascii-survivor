@@ -1,4 +1,4 @@
-import { CursorColor, Direction } from "../../constants/types.js";
+import { CursorColor, Direction } from "../../types/types.js";
 import { renderWorld } from "../../rendering/renderer.js";
 import { TileConfig } from "../tiles/index.js";
 import { handleInteraction } from "./interaction-handler.js";
@@ -56,7 +56,7 @@ export class InteractiveCursor {
         console.log(`Cursor locked: ${this.locked}`);
         break;
       case "Space":
-        handleInteraction(currentChunk, player, this, ctx);
+        handleInteraction(currentChunk, player, this);
         break;
       default:
     }

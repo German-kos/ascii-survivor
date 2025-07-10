@@ -1,4 +1,4 @@
-import { CELL_WIDTH, CELL_HEIGHT, FONT } from "../constants/constants.js";
+import { CELL_WIDTH, CELL_HEIGHT, FONT } from "../constants/rendering-constants.js";
 import { InteractiveCursor } from "../game/player/interactive-cursor.js";
 import { Player } from "../game/player/player.js";
 import { TileConfig } from "../game/tiles/index.js";

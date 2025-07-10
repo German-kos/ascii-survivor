@@ -1,4 +1,4 @@
-import { Direction } from "../../constants/types.js";
+import { Direction } from "../../types/types.js";
 import { renderWorld } from "../../rendering/renderer.js";
 import { TileConfig } from "../tiles/index.js";
 import { InteractiveCursor } from "./interactive-cursor.js";
