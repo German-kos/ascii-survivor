@@ -22,7 +22,7 @@ export class Player {
     this.facing = "left";
     this.maxHealth = 100;
     this.health = 100;
-    this.inventory = ["axe", "sickle", "pickaxe"];
+    this.inventory = ["axe", "sickle", "pickaxe", "shovel", "rake"];
     this.level = 1;
   }
 
