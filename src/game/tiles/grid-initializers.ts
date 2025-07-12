@@ -1,7 +1,10 @@
-import { GRID_HEIGHT, GRID_WIDTH } from "../constants/rendering-constants.js";
-import { TileConfig } from "../types/interfaces.js";
-import { TileType } from "../types/types.js";
-import { createTile, TILE_CONFIG } from "./tiles/index.js";
+import {
+  GRID_HEIGHT,
+  GRID_WIDTH,
+} from "../../constants/rendering-constants.js";
+import { TileConfig } from "../../types/interfaces.js";
+import { TileType } from "../../types/types.js";
+import { createTile, TILE_CONFIG } from "./index.js";
 
 export function generateDemoChunk(): TileConfig[][] {
   const chunk: TileConfig[][] = [];
