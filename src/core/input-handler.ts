@@ -37,14 +37,10 @@ export class InputHandler {
         break;
       case "ControlLeft":
       case "ControlRight":
+        this.game.toggleCursorLock();
+        break;
       case "Space":
-        // TODO: implement interaction logic
-        // this.cursor.handleInput(
-        //   event,
-        //   this.player,
-        //   this.ctx,
-        //   this.currentChunk
-        // );
+        // TODO: Implement interaction logic
         break;
       default:
         break;
