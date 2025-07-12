@@ -1,9 +1,9 @@
-import { RenderingSystem } from "../../rendering/index.js";
 import { Direction, Position, TileConfig } from "../../types/index.js";
+import { InteractiveCursor, Player, WorldSystem } from "../index.js";
+import { RenderingSystem } from "../../rendering/index.js";
 import { getNextPosition } from "../../utils/index.js";
-import { InteractiveCursor, Player } from "../player/index.js";
-import { WorldSystem } from "../world/index.js";
 
+// TODO: Implement cursor range logic (depending on item range...)
 export class GameController {
   private player: Player;
   private cursor: InteractiveCursor;
