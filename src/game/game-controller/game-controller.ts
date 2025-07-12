@@ -50,6 +50,11 @@ export class GameController {
     }
   }
 
+  toggleCursorLock(): void {
+    this.cursor.toggleLockState();
+    this.executeRender();
+  }
+
   private tryMovePlayer(direction: Direction): void {
     const currentPosition: Position = this.player.getPosition();
     const nextPosition: Position = getNextPosition(currentPosition, direction);
@@ -60,11 +65,13 @@ export class GameController {
       playerMoved = true;
     }
 
-    if (this.cursor.getCursorLockState()) {
+    const cursorLocked: boolean = this.cursor.getCursorLockState();
+    if (cursorLocked) {
       this.updateLockedCursor(direction);
       this.moved = true;
     } else if (playerMoved) {
-      this.updateUnlockedCursor(direction, currentPosition);
+      const currentCursorPosition: Position = this.cursor.getPosition();
+      this.updateUnlockedCursor(direction, currentCursorPosition);
       this.moved = true;
     }
   }
