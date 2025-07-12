@@ -30,8 +30,8 @@ export class InputHandler {
         this.game.movePlayer(this.getDirectionFromKey(event));
         break;
       case "ArrowUp":
-      case "ArrowDown":
       case "ArrowLeft":
+      case "ArrowDown":
       case "ArrowRight":
         this.game.moveCursor(this.getDirectionFromKey(event));
         break;
@@ -54,12 +54,16 @@ export class InputHandler {
   private getDirectionFromKey(event: KeyboardEvent): Direction {
     switch (event.code) {
       case "KeyW":
+      case "ArrowUp":
         return "up";
       case "KeyA":
+      case "ArrowLeft":
         return "left";
       case "KeyS":
+      case "ArrowDown":
         return "down";
       case "KeyD":
+      case "ArrowRight":
         return "right";
       default:
         throw new Error("Invalid direction key");
