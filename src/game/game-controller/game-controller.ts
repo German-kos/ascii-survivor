@@ -30,12 +30,8 @@ export class GameController {
   }
 
   movePlayer(direction: Direction): void {
-    const currentPosition: Position = this.player.getPosition();
-    const nextPosition: Position = getNextPosition(currentPosition, direction);
+    this.tryMovePlayer(direction);
 
-    if (this.worldSystem.isWalkable(nextPosition)) {
-      this.executeMovePlayer(nextPosition, direction);
-    }
     if (this.moved) {
       this.executeRender();
     }
@@ -54,24 +50,23 @@ export class GameController {
     }
   }
 
-  private updateCursor(direction: Direction): void {
-    const cursorLocked: boolean = this.cursor.getCursorLockState();
+  private tryMovePlayer(direction: Direction): void {
+    const currentPosition: Position = this.player.getPosition();
+    const nextPosition: Position = getNextPosition(currentPosition, direction);
+    let playerMoved = false;
 
-    if (cursorLocked) {
-      this.updateLockedCursor(direction);
-    } else {
-      const currentPosition: Position = this.cursor.getPosition();
-      this.updateUnlockedCursor(direction, currentPosition);
+    if (this.worldSystem.isWalkable(nextPosition)) {
+      this.player.setPosition(nextPosition);
+      playerMoved = true;
     }
-  }
 
-  private executeMovePlayer(
-    nextPosition: Position,
-    direction: Direction
-  ): void {
-    this.player.setPosition(nextPosition);
-    this.moved = true;
-    this.updateCursor(direction);
+    if (this.cursor.getCursorLockState()) {
+      this.updateLockedCursor(direction);
+      this.moved = true;
+    } else if (playerMoved) {
+      this.updateUnlockedCursor(direction, currentPosition);
+      this.moved = true;
+    }
   }
 
   private executeMoveCursor(
@@ -80,15 +75,6 @@ export class GameController {
   ): void {
     this.cursor.setPosition(nextPosition);
     this.moved = true;
-  }
-
-  private executeRender(): void {
-    this.moved = false;
-    this.renderingSystem.render(
-      this.currentChunk,
-      this.player.getRenderingParams(),
-      this.cursor.getRenderingParams()
-    );
   }
 
   private updateLockedCursor(direction: Direction): void {
@@ -115,5 +101,14 @@ export class GameController {
     if (canMoveCursor) {
       this.cursor.setPosition(nextPosition);
     }
+  }
+
+  private executeRender(): void {
+    this.moved = false;
+    this.renderingSystem.render(
+      this.currentChunk,
+      this.player.getRenderingParams(),
+      this.cursor.getRenderingParams()
+    );
   }
 }
