@@ -1,20 +1,17 @@
 import { CursorColor, Direction } from "../../types/types.js";
-import { renderWorld } from "../../rendering/renderer.js";
-import { handleInteraction } from "./interaction-handler.js";
-import { Player } from "./player.js";
-import { CURSOR_COLORS } from "../../constants/rendering-constants.js";
-import { TileConfig } from "../../types/interfaces.js";
+import { CursorRenderingParams, Position } from "../../types/index.js";
+import { CURSOR_COLORS } from "../../constants/index.js";
 
 export class InteractiveCursor {
-  targetX: number;
-  targetY: number;
-  locked: boolean;
-  color: CursorColor;
-  range: number;
+  private targetX: number;
+  private targetY: number;
+  private locked: boolean;
+  private color: CursorColor;
+  private range: number;
 
-  constructor(player: Player) {
-    this.targetX = player.x;
-    this.targetY = player.y;
+  constructor(initialPosition: Position) {
+    this.targetX = initialPosition.x;
+    this.targetY = initialPosition.y;
     this.locked = true;
     this.color = this.locked
       ? (CURSOR_COLORS.LOCKED as CursorColor)
@@ -22,100 +19,50 @@ export class InteractiveCursor {
     this.range = 1;
   }
 
-  handleInput(
-    event: KeyboardEvent,
-    player: Player,
-    ctx: CanvasRenderingContext2D,
-    currentChunk: TileConfig[][]
-  ) {
-    switch (event.code) {
-      case "ArrowUp":
-        if (this.canMoveCursorUp(player)) {
-          this.targetY -= 1;
-        }
-        break;
-      case "ArrowDown":
-        if (this.canMoveCursorDown(player)) {
-          this.targetY += 1;
-        }
-        break;
-      case "ArrowLeft":
-        if (this.canMoveCursorLeft(player)) {
-          this.targetX -= 1;
-        }
-        break;
-      case "ArrowRight":
-        if (this.canMoveCursorRight(player)) {
-          this.targetX += 1;
-        }
-        break;
-      case "ControlLeft":
-      case "ControlRight":
-        this.locked = !this.locked;
-        this.updateColor();
-        console.log(`Cursor locked: ${this.locked}`);
-        break;
-      case "Space":
-        handleInteraction(currentChunk, player, this);
-        break;
-      default:
-    }
-    renderWorld(ctx, currentChunk, player, this);
+  // new
+  getPosition(): Position {
+    return { x: this.targetX, y: this.targetY };
   }
-
-  private canMoveCursorUp(player: Player): boolean {
-    return this.targetY > player.y - this.range;
+  //new
+  getRenderingParams(): CursorRenderingParams {
+    return {
+      position: this.getPosition(),
+      color: this.color,
+    };
   }
-  private canMoveCursorDown(player: Player): boolean {
-    return this.targetY < player.y + this.range;
-  }
-  private canMoveCursorLeft(player: Player): boolean {
-    return this.targetX > player.x - this.range;
-  }
-  private canMoveCursorRight(player: Player): boolean {
-    return this.targetX < player.x + this.range;
-  }
-
-  moveWithPlayer(direction: Direction) {
-    switch (direction) {
+  getNextPositionLocked(
+    faceDirection: Direction,
+    playerPosition: Position
+  ): Position {
+    switch (faceDirection) {
       case "up":
-        this.targetY -= 1;
-        break;
+        return { x: playerPosition.x, y: playerPosition.y - 1 };
       case "down":
-        this.targetY += 1;
-        break;
+        return { x: playerPosition.x, y: playerPosition.y + 1 };
       case "left":
-        this.targetX -= 1;
-        break;
+        return { x: playerPosition.x - 1, y: playerPosition.y };
       case "right":
-        this.targetX += 1;
-        break;
+        return { x: playerPosition.x + 1, y: playerPosition.y };
       default:
-        console.log("Unknown direction");
+        throw new Error("Unknown facing direction");
     }
   }
 
-  moveToFacingDirection(player: Player) {
-    switch (player.facing) {
-      case "up":
-        this.targetY = player.y - 1;
-        this.targetX = player.x;
-        break;
-      case "down":
-        this.targetY = player.y + 1;
-        this.targetX = player.x;
-        break;
-      case "left":
-        this.targetX = player.x - 1;
-        this.targetY = player.y;
-        break;
-      case "right":
-        this.targetX = player.x + 1;
-        this.targetY = player.y;
-        break;
-      default:
-        console.log("Unknown facing direction");
+  // new
+  setPosition(position: Position): void {
+    if (position.x < 0 || position.y < 0) {
+      throw new Error("Position cannot be negative");
     }
+    const { x, y } = position;
+    this.targetX = x;
+    this.targetY = y;
+  }
+
+  //new
+
+  // new
+  getCursorLockState(): boolean {
+    return this.locked;
   }
 
   private updateColor() {
@@ -123,4 +70,102 @@ export class InteractiveCursor {
       ? (CURSOR_COLORS.LOCKED as CursorColor)
       : (CURSOR_COLORS.UNLOCKED as CursorColor);
   }
+
+  // ***OLD METHODS***
+  //
+  // handleInput(
+  //   event: KeyboardEvent,
+  //   player: Player,
+  //   ctx: CanvasRenderingContext2D,
+  //   currentChunk: TileConfig[][]
+  // ) {
+  //   switch (event.code) {
+  //     case "ArrowUp":
+  //       if (this.canMoveCursorUp(player)) {
+  //         this.targetY -= 1;
+  //       }
+  //       break;
+  //     case "ArrowDown":
+  //       if (this.canMoveCursorDown(player)) {
+  //         this.targetY += 1;
+  //       }
+  //       break;
+  //     case "ArrowLeft":
+  //       if (this.canMoveCursorLeft(player)) {
+  //         this.targetX -= 1;
+  //       }
+  //       break;
+  //     case "ArrowRight":
+  //       if (this.canMoveCursorRight(player)) {
+  //         this.targetX += 1;
+  //       }
+  //       break;
+  //     case "ControlLeft":
+  //     case "ControlRight":
+  //       this.locked = !this.locked;
+  //       this.updateColor();
+  //       console.log(`Cursor locked: ${this.locked}`);
+  //       break;
+  //     case "Space":
+  //       handleInteraction(currentChunk, player, this);
+  //       break;
+  //     default:
+  //   }
+  //   renderWorld(ctx, currentChunk, player, this);
+  // }
+
+  // private canMoveCursorUp(player: Player): boolean {
+  //   return this.targetY > player.y - this.range;
+  // }
+  // private canMoveCursorDown(player: Player): boolean {
+  //   return this.targetY < player.y + this.range;
+  // }
+  // private canMoveCursorLeft(player: Player): boolean {
+  //   return this.targetX > player.x - this.range;
+  // }
+  // private canMoveCursorRight(player: Player): boolean {
+  //   return this.targetX < player.x + this.range;
+  // }
+
+  // moveWithPlayer(direction: Direction) {
+  //   switch (direction) {
+  //     case "up":
+  //       this.targetY -= 1;
+  //       break;
+  //     case "down":
+  //       this.targetY += 1;
+  //       break;
+  //     case "left":
+  //       this.targetX -= 1;
+  //       break;
+  //     case "right":
+  //       this.targetX += 1;
+  //       break;
+  //     default:
+  //       console.log("Unknown direction");
+  //   }
+  // }
+
+  // moveToFacingDirection(player: Player) {
+  //   switch (player.facing) {
+  //     case "up":
+  //       this.targetY = player.y - 1;
+  //       this.targetX = player.x;
+  //       break;
+  //     case "down":
+  //       this.targetY = player.y + 1;
+  //       this.targetX = player.x;
+  //       break;
+  //     case "left":
+  //       this.targetX = player.x - 1;
+  //       this.targetY = player.y;
+  //       break;
+  //     case "right":
+  //       this.targetX = player.x + 1;
+  //       this.targetY = player.y;
+  //       break;
+  //     default:
+  //       console.log("Unknown facing direction");
+  //   }
+  // }
 }
