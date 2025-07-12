@@ -1,16 +1,19 @@
-import { CANVAS_SIZE, CELL_SIZE, FONT } from "../constants/index";
+import { CANVAS_SIZE, CELL_SIZE, FONT } from "../constants/index.js";
 import {
   CursorRenderingParams,
   PlayerRenderingParams,
   Position,
   TileConfig,
-} from "../types/index";
+} from "../types/index.js";
 
 export class RenderingSystem {
   private canvas: CanvasRenderingContext2D;
 
   constructor() {
     this.canvas = document.querySelector("canvas")!.getContext("2d")!;
+
+    this.canvas.canvas.width = CANVAS_SIZE.WIDTH;
+    this.canvas.canvas.height = CANVAS_SIZE.HEIGHT;
   }
 
   render(
@@ -108,6 +111,8 @@ export class RenderingSystem {
 
   private drawGrassTile(tile: TileConfig, position: Position): void {
     const { x, y } = position;
+    const cellX = x * CELL_SIZE.WIDTH;
+    const cellY = y * CELL_SIZE.HEIGHT;
 
     this.canvas.save();
 
@@ -121,7 +126,8 @@ export class RenderingSystem {
     this.canvas.textAlign = "left";
     this.canvas.textBaseline = "top";
 
-    this.canvas.fillText(tile.sprite, x / scaleX, y / scaleY);
+    this.canvas.fillText(tile.sprite, cellX / scaleX, cellY / scaleY);
+
     this.canvas.restore();
   }
 
