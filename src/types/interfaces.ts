@@ -58,3 +58,14 @@ export interface Position {
   x: number;
   y: number;
 }
+
+export interface PlayerRenderingParams {
+  position: Position;
+  sprite: string;
+  color: string;
+}
+
+export interface CursorRenderingParams {
+  position:Position;
+  color: string;
+}
