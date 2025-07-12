@@ -1,5 +1,5 @@
-import { MOVEMENT_DELTAS } from "../constants/game-constants";
-import { Direction, Position } from "../types/index";
+import { MOVEMENT_DELTAS } from "../constants/game-constants.js";
+import { Direction, Position } from "../types/index.js";
 
 export function getNextPosition(
   position: Position,

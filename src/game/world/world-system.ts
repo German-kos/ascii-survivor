@@ -1,4 +1,3 @@
-import { ToolLevel } from "./../../types/types";
 import { Position, TileConfig, ToolConfig } from "../../types/interfaces.js";
 import { TileType, ToolType } from "../../types/types.js";
 import { generateDemoChunk } from "../tiles/grid-initializers.js";
