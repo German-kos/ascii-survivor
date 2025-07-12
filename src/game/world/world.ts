@@ -1,5 +1,5 @@
-import { Position, TileConfig } from "../../types/interfaces.js";
-import { generateDemoChunk } from "../grid-initializers.js";
+import { Direction, Position, TileConfig } from "../../types/index.js";
+import { generateDemoChunk } from "../tiles/index.js";
 
 export class World {
   currentChunk: TileConfig[][];
@@ -23,7 +23,7 @@ export class World {
     return this.currentChunk[position.y][position.x];
   }
 
-  private checkForWorldBorder(position: Position): boolean {
+  checkForWorldBorder(position: Position): boolean {
     const { x, y } = position;
     const chunkHeight = this.currentChunk.length;
     const chunkWidth = this.currentChunk[0].length;

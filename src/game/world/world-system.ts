@@ -1,16 +1,20 @@
 import { ToolLevel } from "./../../types/types";
 import { Position, TileConfig, ToolConfig } from "../../types/interfaces.js";
 import { TileType, ToolType } from "../../types/types.js";
-import { generateDemoChunk } from "../grid-initializers.js";
+import { generateDemoChunk } from "../tiles/grid-initializers.js";
 import { TILE_CONFIG } from "../tiles/tile-config.js";
 
 // TODO: destroyTile(position: Position, tool: ToolType)...
 
 export class WorldSystem {
-  currentChunk: TileConfig[][];
+  private currentChunk: TileConfig[][];
 
   constructor() {
     this.currentChunk = generateDemoChunk();
+  }
+
+  getCurrentChunk(): TileConfig[][] {
+    return this.currentChunk;
   }
 
   isWalkable(position: Position): boolean {
@@ -42,7 +46,7 @@ export class WorldSystem {
     }
   }
 
-  private isInBounds(position: Position): boolean {
+  isInBounds(position: Position): boolean {
     const { x, y } = position;
     const chunkHeight = this.currentChunk.length;
     const chunkWidth = this.currentChunk[0].length;
