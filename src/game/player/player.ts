@@ -1,18 +1,19 @@
-import { Direction } from "../../types/types.js";
-import { renderWorld } from "../../rendering/renderer.js";
-import { InteractiveCursor } from "./interactive-cursor.js";
-import { Position, TileConfig } from "../../types/interfaces.js";
+import {
+  Direction,
+  PlayerRenderingParams,
+  Position,
+} from "../../types/index.js";
 
 export class Player {
-  sprite: string;
-  color: string;
-  x: number;
-  y: number;
-  facing: Direction;
-  maxHealth: number;
-  health: number;
-  inventory: string[];
-  level: number;
+  private sprite: string;
+  private color: string;
+  private x: number;
+  private y: number;
+  private facing: Direction;
+  private maxHealth: number;
+  private health: number;
+  private inventory: string[];
+  private level: number;
 
   constructor() {
     this.sprite = "☺";
@@ -26,122 +27,119 @@ export class Player {
     this.level = 1;
   }
 
-  private static MOVEMENT_DELTAS = {
-    up: { dx: 0, dy: -1 },
-    down: { dx: 0, dy: 1 },
-    left: { dx: -1, dy: 0 },
-    right: { dx: 1, dy: 0 },
-  } as const;
-
   // For later implementation
   loadFromSave(saveData: any) {
     this.sprite = saveData.sprite || this.sprite;
     this.x = saveData.x || this.x;
     this.y = saveData.y || this.y;
     this.facing = saveData.facing || this.facing;
-    //  Later implementation
-    // this.chunk = saveData.chunk || this.chunk;
     this.maxHealth = saveData.maxHealth || this.maxHealth;
     this.health = saveData.health || this.health;
     this.inventory = saveData.inventory || this.inventory;
     this.level = saveData.level || this.level;
   }
 
-  setPosition(position: Position): void {
-    if (position.x < 0 || position.y < 0) {
-      throw new Error("Position cannot be negative");
-    }
-    this.x = position.x;
-    this.y = position.y;
+  getRenderingParams(): PlayerRenderingParams {
+    const position = this.getPosition();
+    return {
+      position,
+      sprite: this.sprite,
+      color: this.color,
+    };
   }
 
   getPosition(): Position {
     return { x: this.x, y: this.y };
   }
-
-  getNextPosition(direction: Direction): Position {
-    const { dx, dy } = Player.MOVEMENT_DELTAS[direction];
-    return { x: this.x + dx, y: this.y + dy };
-  }
-  
-  movePlayer(
-    event: KeyboardEvent,
-    currentChunk: TileConfig[][],
-    ctx: CanvasRenderingContext2D,
-    cursor: InteractiveCursor
-  ) {
-    if (!this.checkForWorldBorder(event, currentChunk)) {
-      return;
+  setPosition(position: Position): void {
+    if (position.x < 0 || position.y < 0) {
+      throw new Error("Position cannot be negative");
     }
-
-    let direction: Direction;
-
-    switch (event.code) {
-      case "KeyW":
-        this.facing = "up";
-        direction = "up";
-        break;
-      case "KeyS":
-        this.facing = "down";
-        direction = "down";
-        break;
-      case "KeyA":
-        this.facing = "left";
-        direction = "left";
-        break;
-      case "KeyD":
-        this.facing = "right";
-        direction = "right";
-        break;
-      default:
-        return;
-    }
-
-    const { dx, dy } = this.getMovementDelta(direction);
-    const newX = this.x + dx;
-    const newY = this.y + dy;
-
-    if (!this.isTileWalkable(currentChunk[newY][newX])) {
-      console.log(
-        `Tile at (${newX}, ${newY}) is not walkable, there's a ${currentChunk[newY][newX].name}`
-      );
-      cursor.locked && cursor.moveToFacingDirection(this);
-      return;
-    }
-    this.x = newX;
-    this.y = newY;
-    this.updateCursor(cursor, direction);
-    renderWorld(ctx, currentChunk, this, cursor);
+    const { x, y } = position;
+    this.x = x;
+    this.y = y;
   }
 
-  private checkForWorldBorder(
-    event: KeyboardEvent,
-    currentChunk: TileConfig[][]
-  ): boolean {
-    if (
-      (this.y <= 0 && event.code === "KeyW") ||
-      (this.y >= currentChunk.length - 1 && event.code === "KeyS") ||
-      (this.x <= 0 && event.code === "KeyA") ||
-      (this.x >= currentChunk[0].length - 1 && event.code === "KeyD")
-    ) {
-      return false;
-    }
-    return true;
-  }
+  // ***OLD  METHODS***
 
-  private isTileWalkable(tile: TileConfig): boolean {
-    return tile.walkable;
-  }
+  // movePlayer(
+  //   event: KeyboardEvent,
+  //   currentChunk: TileConfig[][],
+  //   ctx: CanvasRenderingContext2D,
+  //   cursor: InteractiveCursor
+  // ) {
+  //   if (!this.checkForWorldBorder(event, currentChunk)) {
+  //     return;
+  //   }
+  //
+  //   let direction: Direction;
+  //
+  //   switch (event.code) {
+  //     case "KeyW":
+  //       this.facing = "up";
+  //       direction = "up";
+  //       break;
+  //     case "KeyS":
+  //       this.facing = "down";
+  //       direction = "down";
+  //       break;
+  //     case "KeyA":
+  //       this.facing = "left";
+  //       direction = "left";
+  //       break;
+  //     case "KeyD":
+  //       this.facing = "right";
+  //       direction = "right";
+  //       break;
+  //     default:
+  //       return;
+  //   }
+  //
+  //   const { dx, dy } = this.getMovementDelta(direction);
+  //   const newX = this.x + dx;
+  //   const newY = this.y + dy;
+  //
+  //   if (!this.isTileWalkable(currentChunk[newY][newX])) {
+  //     console.log(
+  //       `Tile at (${newX}, ${newY}) is not walkable, there's a ${currentChunk[newY][newX].name}`
+  //     );
+  //     cursor.locked && cursor.moveToFacingDirection(this);
+  //     return;
+  //   }
+  //   this.x = newX;
+  //   this.y = newY;
+  //   this.updateCursor(cursor, direction);
+  //   renderWorld(ctx, currentChunk, this, cursor);
+  // }
 
-  private updateCursor(cursor: InteractiveCursor, direction: Direction) {
-    if (cursor.locked) {
-      cursor.moveToFacingDirection(this);
-    } else {
-      cursor.moveWithPlayer(direction);
-    }
-  }
+  // private checkForWorldBorder(
+  //   event: KeyboardEvent,
+  //   currentChunk: TileConfig[][]
+  // ): boolean {
+  //   if (
+  //     (this.y <= 0 && event.code === "KeyW") ||
+  //     (this.y >= currentChunk.length - 1 && event.code === "KeyS") ||
+  //     (this.x <= 0 && event.code === "KeyA") ||
+  //     (this.x >= currentChunk[0].length - 1 && event.code === "KeyD")
+  //   ) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
-  private getMovementDelta(direction: Direction) {
-    return Player.MOVEMENT_DELTAS[direction];
-  }
+  // private isTileWalkable(tile: TileConfig): boolean {
+  //   return tile.walkable;
+  // }
+
+  // private updateCursor(cursor: InteractiveCursor, direction: Direction) {
+  //   if (cursor.locked) {
+  //     cursor.moveToFacingDirection(this);
+  //   } else {
+  //     cursor.moveWithPlayer(direction);
+  //   }
+  // }
+
+  // private getMovementDelta(direction: Direction) {
+  //   return Player.MOVEMENT_DELTAS[direction];
+  // }
 }
