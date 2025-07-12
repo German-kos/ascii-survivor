@@ -3,6 +3,14 @@ export const CELL_WIDTH = 24;
 export const CELL_HEIGHT = 24;
 export const GRID_WIDTH = 40;
 export const GRID_HEIGHT = 25;
+export const CELL_SIZE = {
+  WIDTH: CELL_WIDTH,
+  HEIGHT: CELL_HEIGHT,
+};
+export const GRID_SIZE = {
+  WIDTH: GRID_WIDTH,
+  HEIGHT: GRID_HEIGHT,
+};
 
 export const CURSOR_COLORS = {
   UNLOCKED: "#ffff00", // Yellow
