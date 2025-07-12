@@ -8,20 +8,18 @@ export function handleInteraction(
   player: Player,
   cursor: InteractiveCursor
 ) {
-  const tile = currentChunk[cursor.targetY][cursor.targetX];
-
-  if (!canTileBeHarvested(tile)) {
-    console.log("Nothing I can do with this tile.");
-    return;
-  }
-
-  if (noToolRequired(tile)) {
-    harvestWithoutTool(tile, player, currentChunk, cursor);
-  } else if (hasRequiredTool(tile, player)) {
-    harvestWithTool(tile, player, currentChunk, cursor);
-  } else {
-    console.log(`I need a ${tile.toolRequired} to harvest this ${tile.name}.`);
-  }
+  // const tile = currentChunk[cursor.targetY][cursor.targetX];
+  // if (!canTileBeHarvested(tile)) {
+  // console.log("Nothing I can do with this tile.");
+  // return;
+  // }
+  // if (noToolRequired(tile)) {
+  //   harvestWithoutTool(tile, player, currentChunk, cursor);
+  // } else if (hasRequiredTool(tile, player)) {
+  //   harvestWithTool(tile, player, currentChunk, cursor);
+  // } else {
+  //   console.log(`I need a ${tile.toolRequired} to harvest this ${tile.name}.`);
+  // }
 }
 
 function canTileBeHarvested(highlightedTile: TileConfig): boolean {
@@ -32,17 +30,17 @@ function canTileBeDestroyed(highlightedTile: TileConfig): boolean {
   return highlightedTile.canBeDestroyed;
 }
 
-function hasRequiredTool(highlightedTile: TileConfig, player: Player): boolean {
-  return player.inventory.includes(highlightedTile.toolRequired);
-}
+// function hasRequiredTool(highlightedTile: TileConfig, player: Player): boolean {
+// return player.inventory.includes(highlightedTile.toolRequired);
+// }
 
 function noToolRequired(highlightedTile: TileConfig): boolean {
   return highlightedTile.toolRequired === "none";
 }
 
 function addToInventory(player: Player, highlightedTile: TileConfig): void {
-  player.inventory.push(highlightedTile.type + " resource");
-  console.log(player.inventory);
+  // player.inventory.push(highlightedTile.type + " resource");
+  // console.log(player.inventory);
 }
 
 function createTileFromConfig(
@@ -50,9 +48,9 @@ function createTileFromConfig(
   cursor: InteractiveCursor,
   destroyedTile: TileConfig
 ): void {
-  currentChunk[cursor.targetY][cursor.targetX] = createTile(
-    destroyedTile.leavesBehind
-  );
+  // currentChunk[cursor.targetY][cursor.targetX] = createTile(
+  //   destroyedTile.leavesBehind
+  // );
 }
 
 function isTileDestroyed(highlightedTile: TileConfig): boolean {
