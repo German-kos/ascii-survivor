@@ -3,9 +3,10 @@ import {
   ItemType,
   TileSprite,
   TileType,
-  ToolLevel,
+  ItemLevel,
   ToolType,
-} from "./types.js";
+  ToolAction,
+} from "./index.js";
 
 export interface TileConfig {
   name: string;
@@ -21,7 +22,7 @@ export interface TileConfig {
   health: number;
   damage: number;
   toolRequired: ToolType;
-  toolLevelRequired: ToolLevel;
+  toolLevelRequired: ItemLevel;
   leavesBehind: TileType;
   canBuildOn: boolean;
 }
@@ -30,13 +31,13 @@ export interface ToolConfig {
   name: string;
   itemType: ItemType;
   type: ToolType;
-  toolLevel: ToolLevel;
+  toolLevel: ItemLevel;
   // sprite // later implementation with images
   attackDamage: number;
   attackSpeed: number;
   tileDamage: number;
   useSpeed: number;
-  level: ToolLevel;
+  level: ItemLevel;
   description: string;
   canDestroy: boolean;
   canBuild: boolean;
@@ -66,6 +67,27 @@ export interface PlayerRenderingParams {
 }
 
 export interface CursorRenderingParams {
-  position:Position;
+  position: Position;
   color: string;
+}
+
+export interface Item {
+  name: string;
+  type: ItemType;
+  attackDamage?: number;
+  toolDamage?: number;
+  // sprite: string; // later implementation
+  description: string;
+  level: ItemLevel;
+  toolType?: ToolType;
+  action?: ToolAction;
+  quantity: number;
+  maxQuantity: number;
+  isEquipped: boolean;
+  consumeOnUse: boolean;
+  isMaterial: boolean;
+  canBeCrafted: boolean;
+  canBeUsed: boolean;
+  sellValue: number;
+  buyValue: number;
 }

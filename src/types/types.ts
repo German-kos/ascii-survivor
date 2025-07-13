@@ -28,7 +28,9 @@ export type ToolAction =
   | "harvest"
   | "plant"
   | "water"
-  | "use";
+  | "use"
+  | "none"
+  | "equip";
 
 export type ItemType =
   | "weapon"
@@ -39,6 +41,6 @@ export type ItemType =
   | "material"
   | "misc";
 
-export type ToolLevel = "none" | "basic" | "advanced" | "expert" | "master";
+export type ItemLevel = "none" | "basic" | "advanced" | "expert" | "master";
 
 export type TileSprite = "." | "█" | "♠" | "≈" | "●" | "▓" | "*" | "∴";
