@@ -11,6 +11,7 @@ import { RenderingSystem } from "../../rendering/index.js";
 import { getNextPosition } from "../../utils/index.js";
 
 // TODO: Implement cursor range logic (depending on item range...)
+// TODO: clean up interact method logic.
 export class GameController {
   private player: Player;
   private cursor: InteractiveCursor;
