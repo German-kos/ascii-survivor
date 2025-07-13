@@ -4,7 +4,7 @@ import {
   PlayerRenderingParams,
   Position,
 } from "../../types/index.js";
-import { bronzeAxe } from "../items/index.js";
+import { bronzeAxe, bronzePickaxe, bronzeRake } from "../items/index.js";
 
 export class Player {
   private sprite: string;
@@ -28,7 +28,7 @@ export class Player {
     this.health = 100;
     this.inventory = [bronzeAxe];
     this.level = 1;
-    this.equippedItem = bronzeAxe;
+    this.equippedItem = bronzeRake;
   }
 
   // For later implementation

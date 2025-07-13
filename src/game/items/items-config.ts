@@ -1,5 +1,24 @@
 import { Item } from "../../types/index.js";
 
+export const bronzePickaxe: Item = {
+  name: "Bronze Pickaxe",
+  type: "tool",
+  toolType: "pickaxe",
+  attackDamage: 1,
+  toolDamage: 5,
+  description: "A sturdy bronze pickaxe for mining.",
+  level: 1,
+  quantity: 1,
+  maxQuantity: 1,
+  isEquipped: true,
+  consumeOnUse: false,
+  isMaterial: true,
+  canBeCrafted: false,
+  canBeUsed: false,
+  sellValue: 0,
+  buyValue: 0,
+};
+
 export const bronzeAxe: Item = {
   name: "Bronze Axe",
   type: "tool",
@@ -7,10 +26,29 @@ export const bronzeAxe: Item = {
   attackDamage: 1,
   toolDamage: 5,
   description: "A sturdy bronze axe for chopping wood.",
-  level: "basic",
+  level: 1,
   quantity: 1,
   maxQuantity: 1,
   isEquipped: true,
+  consumeOnUse: false,
+  isMaterial: true,
+  canBeCrafted: false,
+  canBeUsed: false,
+  sellValue: 0,
+  buyValue: 0,
+};
+
+export const bronzeRake: Item = {
+  name: "Bronze Rake",
+  type: "tool",
+  toolType: "rake",
+  attackDamage: 1,
+  toolDamage: 0,
+  description: "A bronze rake for tilling soil.",
+  level: 1,
+  quantity: 1,
+  maxQuantity: 1,
+  isEquipped: false,
   consumeOnUse: false,
   isMaterial: true,
   canBeCrafted: false,

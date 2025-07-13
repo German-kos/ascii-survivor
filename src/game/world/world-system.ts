@@ -38,11 +38,13 @@ export class WorldSystem {
     this.currentChunk[y][x] = this.createTile(tile.leavesBehind);
   }
 
-  destroyTile(position: Position, damage: number): boolean {
-    console.log(damage);
+  destroyTile(position: Position, damage?: number): boolean {
+    if (!damage) {
+      damage = 0;
+    }
 
     const tile: TileConfig = this.getTile(position);
-    if (tile.canBeDestroyed) {
+    if (tile.destructible) {
       const tile: TileConfig = this.getTile(position);
       if (tile.health > 0) {
         this.hitTile(tile, damage);
@@ -50,6 +52,10 @@ export class WorldSystem {
           this.setTile(position);
           return true;
         }
+      }
+      if (tile.health <= 0) {
+        this.setTile(position);
+        return true;
       }
     }
     return false;

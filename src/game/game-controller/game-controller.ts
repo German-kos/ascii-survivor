@@ -64,28 +64,26 @@ export class GameController {
   }
 
   interact(): void {
-    const cursorPosition: Position = this.cursor.getPosition();
-    const tileAtCursor: TileConfig = this.worldSystem.getTile(cursorPosition);
-    const requiredTool: ToolType = tileAtCursor.toolRequired;
-    const requiredToolLevel: ItemLevel = tileAtCursor.toolLevelRequired;
+    const position: Position = this.cursor.getPosition();
+    const tile: TileConfig = this.worldSystem.getTile(position);
+    const toolIsRequired: boolean = this.toolIsRequired(tile);
+    const tileIsDestructible: boolean = this.tileIsDestructible(tile);
 
-    if (requiredTool !== "none") {
-      const equippedItem: Item | null = this.player.getEquippedItem();
-      if (
-        equippedItem &&
-        equippedItem.toolType === requiredTool &&
-        equippedItem.level === requiredToolLevel
-      ) {
-        const tileDestroyed: boolean = this.worldSystem.destroyTile(
-          cursorPosition,
-          equippedItem.toolDamage || 0
-        );
-        if (tileDestroyed) {
-          this.executeRender();
-        }
-      }
+    if (!toolIsRequired && tileIsDestructible) {
+      this.tryDestroyTile(position);
+      return;
+    }
+
+    const equippedItem: Item | null = this.player.getEquippedItem();
+    const meetsToolRequirements: boolean = this.meetsToolRequirements(
+      equippedItem,
+      tile
+    );
+    if (meetsToolRequirements && tileIsDestructible) {
+      this.tryDestroyTile(position, equippedItem?.toolDamage);
     }
   }
+
   private tryMovePlayer(direction: Direction): void {
     const currentPosition: Position = this.player.getPosition();
     const nextPosition: Position = getNextPosition(currentPosition, direction);
@@ -148,5 +146,48 @@ export class GameController {
       this.player.getRenderingParams(),
       this.cursor.getRenderingParams()
     );
+  }
+
+  private toolIsRequired(tile: TileConfig): boolean {
+    return tile.toolRequired !== "none";
+  }
+
+  private tileIsDestructible(tile: TileConfig): boolean {
+    return tile.destructible;
+  }
+
+  private tryDestroyTile(position: Position, damage?: number): void {
+    if (!damage) damage = 0;
+    const tileDestroyed = this.worldSystem.destroyTile(position, damage);
+    console.log(tileDestroyed);
+    if (tileDestroyed) {
+      this.executeRender();
+    }
+  }
+
+  private meetsToolRequirements(
+    equippedItem: Item | null,
+    tile: TileConfig
+  ): boolean {
+    if (
+      equippedItem !== null &&
+      equippedItem !== undefined &&
+      equippedItem.toolType === tile.toolRequired &&
+      equippedItem.level >= tile.toolLevelRequired
+    ) {
+      return true;
+    } else if (equippedItem?.toolType !== tile.toolRequired) {
+      console.log(
+        `Tool required: ${tile.toolRequired}, but equipped tool is: ${equippedItem?.toolType}`
+      );
+      return false;
+    } else if (equippedItem?.level < tile.toolLevelRequired) {
+      console.log(
+        `Tool level required: ${tile.toolLevelRequired}, but equipped tool level is: ${equippedItem?.level}`
+      );
+      return false;
+    } else {
+      return false;
+    }
   }
 }

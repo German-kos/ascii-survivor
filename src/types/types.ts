@@ -41,6 +41,6 @@ export type ItemType =
   | "material"
   | "misc";
 
-export type ItemLevel = "none" | "basic" | "advanced" | "expert" | "master";
+export type ItemLevel = 0 | 1 | 2 | 3 | 4 | 5;
 
 export type TileSprite = "." | "█" | "♠" | "≈" | "●" | "▓" | "*" | "∴";

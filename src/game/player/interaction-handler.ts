@@ -27,7 +27,7 @@ function canTileBeHarvested(highlightedTile: TileConfig): boolean {
 }
 
 function canTileBeDestroyed(highlightedTile: TileConfig): boolean {
-  return highlightedTile.canBeDestroyed;
+  return highlightedTile.destructible;
 }
 
 // function hasRequiredTool(highlightedTile: TileConfig, player: Player): boolean {

@@ -15,7 +15,7 @@ export interface TileConfig {
   color: string;
   background: string;
   description: string;
-  canBeDestroyed: boolean;
+  destructible: boolean;
   canBeHarvested: boolean;
   harvestAmount: number;
   walkable: boolean;
