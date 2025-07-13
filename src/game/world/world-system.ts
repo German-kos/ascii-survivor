@@ -44,20 +44,23 @@ export class WorldSystem {
     }
 
     const tile: TileConfig = this.getTile(position);
-    if (tile.destructible) {
-      const tile: TileConfig = this.getTile(position);
-      if (tile.health > 0) {
-        this.hitTile(tile, damage);
-        if (tile.health <= 0) {
-          this.setTile(position);
-          return true;
-        }
-      }
-      if (tile.health <= 0) {
-        this.setTile(position);
-        return true;
-      }
+    if (!tile.destructible) {
+      return false;
     }
+
+    // Handle tiles that can be destroyed instantly (health <= 0)
+    if (tile.health <= 0) {
+      this.setTile(position);
+      return true;
+    }
+
+    // Handle tiles that need to be damaged first
+    this.hitTile(tile, damage);
+    if (tile.health <= 0) {
+      this.setTile(position);
+      return true;
+    }
+
     return false;
   }
 

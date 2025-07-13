@@ -159,7 +159,6 @@ export class GameController {
   private tryDestroyTile(position: Position, damage?: number): void {
     if (!damage) damage = 0;
     const tileDestroyed = this.worldSystem.destroyTile(position, damage);
-    console.log(tileDestroyed);
     if (tileDestroyed) {
       this.executeRender();
     }
@@ -169,25 +168,25 @@ export class GameController {
     equippedItem: Item | null,
     tile: TileConfig
   ): boolean {
-    if (
-      equippedItem !== null &&
-      equippedItem !== undefined &&
-      equippedItem.toolType === tile.toolRequired &&
-      equippedItem.level >= tile.toolLevelRequired
-    ) {
-      return true;
-    } else if (equippedItem?.toolType !== tile.toolRequired) {
-      console.log(
-        `Tool required: ${tile.toolRequired}, but equipped tool is: ${equippedItem?.toolType}`
-      );
-      return false;
-    } else if (equippedItem?.level < tile.toolLevelRequired) {
-      console.log(
-        `Tool level required: ${tile.toolLevelRequired}, but equipped tool level is: ${equippedItem?.level}`
-      );
-      return false;
-    } else {
+    if (!equippedItem) {
+      console.log(`No tool equipped, but ${tile.toolRequired} required`);
       return false;
     }
+
+    if (equippedItem.toolType !== tile.toolRequired) {
+      console.log(
+        `Tool required: ${tile.toolRequired}, but equipped: ${equippedItem.toolType}`
+      );
+      return false;
+    }
+
+    if (equippedItem.level < tile.toolLevelRequired) {
+      console.log(
+        `Tool level required: ${tile.toolLevelRequired}, but equipped level: ${equippedItem.level}`
+      );
+      return false;
+    }
+
+    return true;
   }
 }

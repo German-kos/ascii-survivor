@@ -122,7 +122,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     walkable: true,
     health: 0,
     damage: 0,
-    toolRequired: "sickle",
+    toolRequired: "none",
     toolLevelRequired: 0,
     leavesBehind: "grass",
     canBuildOn: true,
