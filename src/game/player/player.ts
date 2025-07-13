@@ -1,8 +1,10 @@
 import {
   Direction,
+  Item,
   PlayerRenderingParams,
   Position,
 } from "../../types/index.js";
+import { bronzeAxe } from "../items/index.js";
 
 export class Player {
   private sprite: string;
@@ -12,8 +14,9 @@ export class Player {
   private facing: Direction;
   private maxHealth: number;
   private health: number;
-  private inventory: string[];
+  private inventory: Item[];
   private level: number;
+  private equippedItem: Item | null;
 
   constructor() {
     this.sprite = "☺";
@@ -23,8 +26,9 @@ export class Player {
     this.facing = "left";
     this.maxHealth = 100;
     this.health = 100;
-    this.inventory = ["axe", "sickle", "pickaxe", "shovel", "rake"];
+    this.inventory = [bronzeAxe];
     this.level = 1;
+    this.equippedItem = bronzeAxe;
   }
 
   // For later implementation
@@ -51,6 +55,7 @@ export class Player {
   getPosition(): Position {
     return { x: this.x, y: this.y };
   }
+
   setPosition(position: Position): void {
     if (position.x < 0 || position.y < 0) {
       throw new Error("Position cannot be negative");
@@ -58,5 +63,9 @@ export class Player {
     const { x, y } = position;
     this.x = x;
     this.y = y;
+  }
+
+  getEquippedItem(): Item | null {
+    return this.equippedItem;
   }
 }
