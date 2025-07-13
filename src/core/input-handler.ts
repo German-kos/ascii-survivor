@@ -40,7 +40,7 @@ export class InputHandler {
         this.game.toggleCursorLock();
         break;
       case "Space":
-        // TODO: Implement interaction logic
+        this.game.interact();
         break;
       default:
         break;
