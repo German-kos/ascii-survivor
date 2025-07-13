@@ -1,4 +1,11 @@
-import { Direction, Position, TileConfig } from "../../types/index.js";
+import {
+  Direction,
+  Item,
+  ItemLevel,
+  Position,
+  TileConfig,
+  ToolType,
+} from "../../types/index.js";
 import { InteractiveCursor, Player, WorldSystem } from "../index.js";
 import { RenderingSystem } from "../../rendering/index.js";
 import { getNextPosition } from "../../utils/index.js";
@@ -55,6 +62,29 @@ export class GameController {
     this.executeRender();
   }
 
+  interact(): void {
+    const cursorPosition: Position = this.cursor.getPosition();
+    const tileAtCursor: TileConfig = this.worldSystem.getTile(cursorPosition);
+    const requiredTool: ToolType = tileAtCursor.toolRequired;
+    const requiredToolLevel: ItemLevel = tileAtCursor.toolLevelRequired;
+
+    if (requiredTool !== "none") {
+      const equippedItem: Item | null = this.player.getEquippedItem();
+      if (
+        equippedItem &&
+        equippedItem.toolType === requiredTool &&
+        equippedItem.level === requiredToolLevel
+      ) {
+        const tileDestroyed: boolean = this.worldSystem.destroyTile(
+          cursorPosition,
+          equippedItem.toolDamage || 0
+        );
+        if (tileDestroyed) {
+          this.executeRender();
+        }
+      }
+    }
+  }
   private tryMovePlayer(direction: Direction): void {
     const currentPosition: Position = this.player.getPosition();
     const nextPosition: Position = getNextPosition(currentPosition, direction);
