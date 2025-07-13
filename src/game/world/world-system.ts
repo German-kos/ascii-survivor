@@ -38,18 +38,33 @@ export class WorldSystem {
     this.currentChunk[y][x] = this.createTile(tile.leavesBehind);
   }
 
-  destroyTile(position: Position, tool: ToolConfig) {
-    const tile = this.getTile(position);
-    if (tile.canBeDestroyed && this.toolMatches(tile, tool)) {
-      // TODO: This
+  destroyTile(position: Position, damage: number): boolean {
+    console.log(damage);
+
+    const tile: TileConfig = this.getTile(position);
+    if (tile.canBeDestroyed) {
+      const tile: TileConfig = this.getTile(position);
+      if (tile.health > 0) {
+        this.hitTile(tile, damage);
+        if (tile.health <= 0) {
+          this.setTile(position);
+          return true;
+        }
+      }
     }
+    return false;
   }
 
   isInBounds(position: Position): boolean {
-    const { x, y } = position;
-    const chunkHeight = this.currentChunk.length;
-    const chunkWidth = this.currentChunk[0].length;
+    const { x, y }: Position = position;
+    const chunkHeight: number = this.currentChunk.length;
+    const chunkWidth: number = this.currentChunk[0].length;
     return y >= 0 && x >= 0 && y < chunkHeight && x < chunkWidth;
+  }
+
+  private hitTile(tile: TileConfig, damage: number): void {
+    tile.health = tile.health - damage;
+    console.log(tile.health);
   }
 
   private canBuildOn(position: Position): boolean {
