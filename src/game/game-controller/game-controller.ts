@@ -3,7 +3,6 @@ import { InteractiveCursor, Player, WorldSystem } from "../index.js";
 import { RenderingSystem } from "../../rendering/index.js";
 import { getNextPosition } from "../../utils/index.js";
 
-// TODO: Implement cursor range logic (depending on item range...)
 export class GameController {
   private player: Player;
   private cursor: InteractiveCursor;
