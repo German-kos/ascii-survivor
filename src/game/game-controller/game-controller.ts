@@ -1,17 +1,9 @@
-import {
-  Direction,
-  Item,
-  ItemLevel,
-  Position,
-  TileConfig,
-  ToolType,
-} from "../../types/index.js";
+import { Direction, Item, Position, TileConfig } from "../../types/index.js";
 import { InteractiveCursor, Player, WorldSystem } from "../index.js";
 import { RenderingSystem } from "../../rendering/index.js";
 import { getNextPosition } from "../../utils/index.js";
 
 // TODO: Implement cursor range logic (depending on item range...)
-// TODO: clean up interact method logic.
 export class GameController {
   private player: Player;
   private cursor: InteractiveCursor;
@@ -48,7 +40,11 @@ export class GameController {
   moveCursor(direction: Direction): void {
     const currentPosition: Position = this.cursor.getPosition();
     const nextPosition: Position = getNextPosition(currentPosition, direction);
-    const canMoveCursor: boolean = this.worldSystem.isInBounds(nextPosition);
+    const equippedItem: Item | null = this.player.getEquippedItem();
+    const canMoveCursor: boolean = this.canMoveCursorToPosition(
+      nextPosition,
+      equippedItem
+    );
 
     if (canMoveCursor) {
       this.executeMoveCursor(nextPosition, direction);
@@ -137,6 +133,19 @@ export class GameController {
     if (canMoveCursor) {
       this.cursor.setPosition(nextPosition);
     }
+  }
+
+  private canMoveCursorToPosition(
+    nextPosition: Position,
+    equippedItem?: Item | null
+  ): boolean {
+    const range: number = equippedItem?.range || 1;
+    const isInBounds: boolean = this.worldSystem.isInBounds(nextPosition);
+    const isWithinRange: boolean =
+      Math.abs(nextPosition.x - this.player.getPosition().x) <= range &&
+      Math.abs(nextPosition.y - this.player.getPosition().y) <= range;
+
+    return isInBounds && isWithinRange;
   }
 
   private executeRender(): void {

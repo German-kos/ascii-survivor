@@ -3,8 +3,6 @@ import { TileType, ToolType } from "../../types/types.js";
 import { generateDemoChunk } from "../tiles/grid-initializers.js";
 import { TILE_CONFIG } from "../tiles/tile-config.js";
 
-// TODO: destroyTile(position: Position, tool: ToolType)...
-
 export class WorldSystem {
   private currentChunk: TileConfig[][];
 

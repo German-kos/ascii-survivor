@@ -17,6 +17,7 @@ export const bronzePickaxe: Item = {
   canBeUsed: false,
   sellValue: 0,
   buyValue: 0,
+  range: 1,
 };
 
 export const bronzeAxe: Item = {
@@ -36,6 +37,7 @@ export const bronzeAxe: Item = {
   canBeUsed: false,
   sellValue: 0,
   buyValue: 0,
+  range: 1,
 };
 
 export const bronzeRake: Item = {
@@ -55,4 +57,5 @@ export const bronzeRake: Item = {
   canBeUsed: false,
   sellValue: 0,
   buyValue: 0,
+  range: 5,
 };

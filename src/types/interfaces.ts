@@ -90,4 +90,5 @@ export interface Item {
   canBeUsed: boolean;
   sellValue: number;
   buyValue: number;
+  range: number;
 }
