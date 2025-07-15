@@ -1,4 +1,4 @@
-import { TileConfig } from "../../types/interfaces.js";
+import { brickWallItem, bucketOfWater, dirtItem, emptyItem, flowerItem, grassItem, gravelItem, rockItem, TileConfig, woodItem } from "../../index.js";
 
 export const TILE_CONFIG: Record<string, TileConfig> = {
   empty: {
@@ -10,6 +10,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     description: "There's a hole in the ground.",
     destructible: false,
     canBeHarvested: false,
+    harvestItem: emptyItem,
     harvestAmount: 0,
     walkable: false,
     health: 0,
@@ -28,6 +29,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     description: "A sturdy brick wall.",
     destructible: true,
     canBeHarvested: true,
+    harvestItem: brickWallItem,
     harvestAmount: 1,
     walkable: false,
     health: 25,
@@ -46,6 +48,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     description: "A tall tree with lush leaves.",
     destructible: true,
     canBeHarvested: true,
+    harvestItem: woodItem,
     harvestAmount: 4,
     walkable: false,
     health: 25,
@@ -64,6 +67,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     description: "A deep body of water.",
     destructible: false,
     canBeHarvested: true,
+    harvestItem: bucketOfWater,
     harvestAmount: 1,
     walkable: false,
     health: 0,
@@ -82,6 +86,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     description: "A solid rock formation.",
     destructible: true,
     canBeHarvested: true,
+    harvestItem: rockItem,
     harvestAmount: 2,
     walkable: false,
     health: 20,
@@ -100,6 +105,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     description: "A patch of grass.",
     destructible: true,
     canBeHarvested: true,
+    harvestItem: grassItem,
     harvestAmount: 2,
     walkable: true,
     health: 0,
@@ -118,6 +124,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     description: "A beautiful flower.",
     destructible: true,
     canBeHarvested: true,
+    harvestItem: flowerItem,
     harvestAmount: 1,
     walkable: true,
     health: 0,
@@ -136,6 +143,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     description: "A patch of gravel.",
     destructible: true,
     canBeHarvested: true,
+    harvestItem: gravelItem,
     harvestAmount: 1,
     walkable: true,
     health: 0,
@@ -154,6 +162,7 @@ export const TILE_CONFIG: Record<string, TileConfig> = {
     description: "A patch of dirt.",
     destructible: false,
     canBeHarvested: true,
+    harvestItem: dirtItem,
     harvestAmount: 1,
     walkable: true,
     health: 0,
