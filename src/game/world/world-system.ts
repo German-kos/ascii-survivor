@@ -1,7 +1,11 @@
-import { Position, TileConfig, ToolConfig } from "../../types/interfaces.js";
-import { TileType, ToolType } from "../../types/types.js";
-import { generateDemoChunk } from "../tiles/grid-initializers.js";
-import { TILE_CONFIG } from "../tiles/tile-config.js";
+import {
+  generateDemoChunk,
+  Position,
+  TILE_CONFIG,
+  TileConfig,
+  TileType,
+  ToolConfig,
+} from "../../index.js";
 
 export class WorldSystem {
   private currentChunk: TileConfig[][];
@@ -50,7 +54,7 @@ export class WorldSystem {
       this.setTile(position);
       return true;
     }
-    
+
     this.hitTile(tile, damage);
     if (tile.health <= 0) {
       this.setTile(position);
@@ -85,13 +89,5 @@ export class WorldSystem {
   private createTile(tileType: TileType): TileConfig {
     const config = TILE_CONFIG[tileType];
     return { ...config };
-  }
-
-  private toolMatches(tile: TileConfig, tool: ToolConfig): boolean {
-    return (
-      tile.toolRequired === "none" ||
-      (tile.toolRequired === tool.type &&
-        tile.toolLevelRequired === tool.toolLevel)
-    );
   }
 }
