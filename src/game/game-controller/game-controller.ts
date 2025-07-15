@@ -1,19 +1,29 @@
-import { Direction, Item, Position, TileConfig } from "../../types/index.js";
-import { InteractiveCursor, Player, WorldSystem } from "../index.js";
-import { RenderingSystem } from "../../rendering/index.js";
-import { getNextPosition } from "../../utils/index.js";
+import {
+  CursorSystem,
+  Direction,
+  getNextPosition,
+  InventorySystem,
+  Item,
+  PlayerSystem,
+  Position,
+  RenderingSystem,
+  TileConfig,
+  WorldSystem,
+} from "../../index.js";
 
 export class GameController {
-  private player: Player;
-  private cursor: InteractiveCursor;
+  private playerSystem: PlayerSystem;
+  private inventorySystem: InventorySystem;
+  private cursorSystem: CursorSystem;
   private worldSystem: WorldSystem;
   private renderingSystem: RenderingSystem;
   private currentChunk: TileConfig[][];
   private moved: boolean;
 
   constructor() {
-    this.player = new Player();
-    this.cursor = new InteractiveCursor(this.player.getPosition());
+    this.playerSystem = new PlayerSystem();
+    this.inventorySystem = new InventorySystem(); // Initialize with default inventory for now
+    this.cursorSystem = new CursorSystem(this.playerSystem.getPosition());
     this.worldSystem = new WorldSystem();
     this.renderingSystem = new RenderingSystem();
     this.currentChunk = this.worldSystem.getCurrentChunk();
@@ -23,8 +33,8 @@ export class GameController {
   executeInitialRender(): void {
     this.renderingSystem.render(
       this.currentChunk,
-      this.player.getRenderingParams(),
-      this.cursor.getRenderingParams()
+      this.playerSystem.getRenderingParams(),
+      this.cursorSystem.getRenderingParams()
     );
   }
 
@@ -37,9 +47,9 @@ export class GameController {
   }
 
   moveCursor(direction: Direction): void {
-    const currentPosition: Position = this.cursor.getPosition();
+    const currentPosition: Position = this.cursorSystem.getPosition();
     const nextPosition: Position = getNextPosition(currentPosition, direction);
-    const equippedItem: Item | null = this.player.getEquippedItem();
+    const equippedItem: Item | null = this.playerSystem.getEquippedItem();
     const canMoveCursor: boolean = this.canMoveCursorToPosition(
       nextPosition,
       equippedItem
@@ -54,14 +64,14 @@ export class GameController {
   }
 
   toggleCursorLock(): void {
-    this.cursor.toggleLockState();
+    this.cursorSystem.toggleLockState();
     this.executeRender();
   }
 
   interact(): void {
-    const position: Position = this.cursor.getPosition();
+    const position: Position = this.cursorSystem.getPosition();
     const tile: TileConfig = this.worldSystem.getTile(position);
-    const toolIsRequired: boolean = this.toolIsRequired(tile);
+    const toolIsRequired: boolean = this.isToolRequired(tile);
     const tileIsDestructible: boolean = this.tileIsDestructible(tile);
 
     if (!toolIsRequired && tileIsDestructible) {
@@ -69,7 +79,7 @@ export class GameController {
       return;
     }
 
-    const equippedItem: Item | null = this.player.getEquippedItem();
+    const equippedItem: Item | null = this.playerSystem.getEquippedItem();
     const meetsToolRequirements: boolean = this.meetsToolRequirements(
       equippedItem,
       tile
@@ -80,21 +90,21 @@ export class GameController {
   }
 
   private tryMovePlayer(direction: Direction): void {
-    const currentPosition: Position = this.player.getPosition();
+    const currentPosition: Position = this.playerSystem.getPosition();
     const nextPosition: Position = getNextPosition(currentPosition, direction);
     let playerMoved = false;
 
     if (this.worldSystem.isWalkable(nextPosition)) {
-      this.player.setPosition(nextPosition);
+      this.playerSystem.setPosition(nextPosition);
       playerMoved = true;
     }
 
-    const cursorLocked: boolean = this.cursor.getCursorLockState();
+    const cursorLocked: boolean = this.cursorSystem.getCursorLockState();
     if (cursorLocked) {
       this.updateLockedCursor(direction);
       this.moved = true;
     } else if (playerMoved) {
-      const currentCursorPosition: Position = this.cursor.getPosition();
+      const currentCursorPosition: Position = this.cursorSystem.getPosition();
       this.updateUnlockedCursor(direction, currentCursorPosition);
       this.moved = true;
     }
@@ -104,22 +114,22 @@ export class GameController {
     nextPosition: Position,
     direction: Direction
   ): void {
-    this.cursor.setPosition(nextPosition);
+    this.cursorSystem.setPosition(nextPosition);
     this.moved = true;
   }
 
   private updateLockedCursor(direction: Direction): void {
-    const playerPosition: Position = this.player.getPosition();
-    const nextPosition: Position = this.cursor.getNextPositionLocked(
+    const playerPosition: Position = this.playerSystem.getPosition();
+    const nextPosition: Position = this.cursorSystem.getNextPositionLocked(
       direction,
       playerPosition
     );
     const canMoveCursor: boolean = this.worldSystem.isInBounds(nextPosition);
 
     if (canMoveCursor) {
-      this.cursor.setPosition(nextPosition);
+      this.cursorSystem.setPosition(nextPosition);
     } else {
-      this.cursor.setPosition(playerPosition);
+      this.cursorSystem.setPosition(playerPosition);
     }
   }
 
@@ -130,7 +140,7 @@ export class GameController {
     const nextPosition: Position = getNextPosition(currentPosition, direction);
     const canMoveCursor: boolean = this.worldSystem.isInBounds(nextPosition);
     if (canMoveCursor) {
-      this.cursor.setPosition(nextPosition);
+      this.cursorSystem.setPosition(nextPosition);
     }
   }
 
@@ -141,8 +151,8 @@ export class GameController {
     const range: number = equippedItem?.range || 1;
     const isInBounds: boolean = this.worldSystem.isInBounds(nextPosition);
     const isWithinRange: boolean =
-      Math.abs(nextPosition.x - this.player.getPosition().x) <= range &&
-      Math.abs(nextPosition.y - this.player.getPosition().y) <= range;
+      Math.abs(nextPosition.x - this.playerSystem.getPosition().x) <= range &&
+      Math.abs(nextPosition.y - this.playerSystem.getPosition().y) <= range;
 
     return isInBounds && isWithinRange;
   }
@@ -151,12 +161,12 @@ export class GameController {
     this.moved = false;
     this.renderingSystem.render(
       this.currentChunk,
-      this.player.getRenderingParams(),
-      this.cursor.getRenderingParams()
+      this.playerSystem.getRenderingParams(),
+      this.cursorSystem.getRenderingParams()
     );
   }
 
-  private toolIsRequired(tile: TileConfig): boolean {
+  private isToolRequired(tile: TileConfig): boolean {
     return tile.toolRequired !== "none";
   }
 
@@ -166,8 +176,10 @@ export class GameController {
 
   private tryDestroyTile(position: Position, damage?: number): void {
     if (!damage) damage = 0;
+    const tile: TileConfig = this.worldSystem.getTile(position);
     const tileDestroyed = this.worldSystem.destroyTile(position, damage);
     if (tileDestroyed) {
+      this.addItemToInventory(tile.harvestItem);
       this.executeRender();
     }
   }
@@ -196,5 +208,11 @@ export class GameController {
     }
 
     return true;
+  }
+
+  private addItemToInventory(item: Item): void {
+    if (item !== undefined && item.quantity > 0) {
+      this.inventorySystem.addItem(item);
+    }
   }
 }
