@@ -33,6 +33,8 @@ export type ToolAction =
   | "equip";
 
 export type ItemType =
+  | "none"
+  | "block"
   | "weapon"
   | "tool"
   | "seed"
@@ -40,6 +42,8 @@ export type ItemType =
   | "consumable"
   | "material"
   | "misc";
+
+export type FilledWith = "empty" | "water" | "lava" | "honey";
 
 export type ItemLevel = 0 | 1 | 2 | 3 | 4 | 5;
 
