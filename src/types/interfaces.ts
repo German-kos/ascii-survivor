@@ -17,6 +17,7 @@ export interface TileConfig {
   description: string;
   destructible: boolean;
   canBeHarvested: boolean;
+  harvestItem: Item;
   harvestAmount: number;
   walkable: boolean;
   health: number;
@@ -74,12 +75,14 @@ export interface CursorRenderingParams {
 export interface Item {
   name: string;
   type: ItemType;
+  tileType?: TileType;
   attackDamage?: number;
   toolDamage?: number;
   // sprite: string; // later implementation
   description: string;
   level: ItemLevel;
   toolType?: ToolType;
+  filledWith?:string; // this is for buckets or containers
   action?: ToolAction;
   quantity: number;
   maxQuantity: number;
@@ -91,4 +94,9 @@ export interface Item {
   sellValue: number;
   buyValue: number;
   range: number;
+}
+
+export interface StackItemPayload {
+  modifiedItem: Item;
+  quantityLeftover: number;
 }
