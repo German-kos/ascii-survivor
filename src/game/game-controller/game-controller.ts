@@ -56,7 +56,7 @@ export class GameController {
     );
 
     if (canMoveCursor) {
-      this.executeMoveCursor(nextPosition, direction);
+      this.executeMoveCursor(nextPosition);
     }
     if (this.moved) {
       this.executeRender();
@@ -110,10 +110,7 @@ export class GameController {
     }
   }
 
-  private executeMoveCursor(
-    nextPosition: Position,
-    direction: Direction
-  ): void {
+  private executeMoveCursor(nextPosition: Position): void {
     this.cursorSystem.setPosition(nextPosition);
     this.moved = true;
   }
