@@ -1,6 +1,7 @@
 import {
   DEFAULT_INVENTORY,
   DEFAULT_INVENTORY_SIZE,
+  emptyItem,
   Item,
   StackItemPayload,
 } from "../../index";
@@ -21,28 +22,20 @@ export class InventorySystem {
     return this.inventory;
   }
 
-  getIteAtIndex(index: number): Item {
-    if (index < 0 || index >= this.inventorySize) {
-      throw new Error("Index out of bounds");
+  getItemAtIndex(index: number): Item {
+    if (index < 0 || index >= this.inventory.length) {
+      return emptyItem;
     }
     return this.inventory[index];
   }
 
-  addItem(item: Item): boolean {
-    const itemExists = this.isInInventory(item);
+  addItem(item: Item): boolean | Item {
+    const itemExists: boolean = this.isInInventory(item);
     if (itemExists) {
-      const itemIndex = this.findItemIndex(item);
-      const existingItem = this.inventory[itemIndex];
+      return this.handleExistingItem(item);
+    } else {
+      return this.handleNewItem(item);
     }
-    const;
-    const inventoryIsFull = this.isInventoryFull();
-    if (inventoryIsFull) {
-      return false;
-    }
-  }
-
-  private isInventoryFull(): boolean {
-    return this.inventory.length >= this.inventorySize;
   }
 
   private isInInventory(item: Item): boolean {
@@ -51,14 +44,43 @@ export class InventorySystem {
     );
   }
 
+  private handleExistingItem(item: Item): boolean | Item {
+    const itemIndex: number = this.findItemIndex(item);
+    const existingItem: Item = this.inventory[itemIndex];
+    const stackResult: StackItemPayload | null = this.stackItem(
+      existingItem,
+      item.quantity
+    );
+    if (stackResult === null) {
+      return this.handleNewItem(item);
+    }
+
+    this.inventory[itemIndex] = stackResult.modifiedItem;
+
+    if (stackResult.quantityLeftover > 0) {
+      return this.handleNewItem({
+        ...item,
+        quantity: stackResult.quantityLeftover,
+      } as Item);
+    }
+
+    return true;
+  }
+
+  private handleNewItem(item: Item): boolean | Item {
+    const inventoryIsFull: boolean = this.isInventoryFull();
+    if (inventoryIsFull) {
+      return item;
+    }
+
+    this.addItemToInventory(item);
+    return true;
+  }
+
   private findItemIndex(item: Item): number {
     return this.inventory.findIndex(
       (invItem) => invItem.name === item.name && invItem.type === item.type
     );
-  }
-
-  private isItemStackable(item: Item): boolean {
-    return item.maxQuantity > 1 && item.quantity < item.maxQuantity;
   }
 
   private stackItem(
@@ -86,5 +108,13 @@ export class InventorySystem {
       modifiedItem: { ...existingItem, quantity: newQuantity },
       quantityLeftover: 0,
     };
+  }
+
+  private addItemToInventory(item: Item): void {
+    this.inventory.push(item);
+  }
+
+  private isInventoryFull(): boolean {
+    return this.inventory.length >= this.inventorySize;
   }
 }
