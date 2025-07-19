@@ -4,7 +4,7 @@ import {
   emptyItem,
   Item,
   StackItemPayload,
-} from "../../index";
+} from "../../index.js";
 
 export class InventorySystem {
   private inventory: Item[];
