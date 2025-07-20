@@ -74,14 +74,14 @@ export const bronzeRake: Item = {
   canBeUsed: false,
   sellValue: 0,
   buyValue: 0,
-  range: 5,
+  range: 3,
 };
 
 export const bucketOfWater: Item = {
   name: "Bucket of Water",
   type: "tool",
   toolType: "bucket",
-  filledWith:"water",
+  filledWith: "water",
   attackDamage: 0,
   toolDamage: 0,
   description: "A bucket filled with water.",
@@ -96,4 +96,4 @@ export const bucketOfWater: Item = {
   sellValue: 0,
   buyValue: 0,
   range: 1,
-}
+};
