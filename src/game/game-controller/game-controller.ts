@@ -1,15 +1,9 @@
-import {
-  CursorSystem,
-  Direction,
-  getNextPosition,
-  InventorySystem,
-  Item,
-  PlayerSystem,
-  Position,
-  RenderingSystem,
-  TileConfig,
-  WorldSystem,
-} from "../../index.js";
+import { RenderingSystem } from "../../rendering/index.js";
+import { Direction, Item, Position, TileConfig } from "../../types/index.js";
+import { getNextPosition } from "../../utils/index.js";
+import { CursorSystem, InventorySystem, PlayerSystem } from "../player/index.js";
+import { WorldSystem } from "../world/index.js";
+
 
 export class GameController {
   private playerSystem: PlayerSystem;

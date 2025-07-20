@@ -1,11 +1,5 @@
-import {
-  generateDemoChunk,
-  Position,
-  TILE_CONFIG,
-  TileConfig,
-  TileType,
-  ToolConfig,
-} from "../../index.js";
+import { Position, TileConfig, TileType } from "../../types/index.js";
+import { generateDemoChunk, TILE_CONFIG } from "../tiles/index.js";
 
 export class WorldSystem {
   private currentChunk: TileConfig[][];

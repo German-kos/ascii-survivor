@@ -1,4 +1,15 @@
-import { brickWallItem, bucketOfWater, dirtItem, emptyItem, flowerItem, grassItem, gravelItem, rockItem, TileConfig, woodItem } from "../../index.js";
+import { TileConfig } from "../../types/index.js";
+import {
+  brickWallItem,
+  bucketOfWater,
+  dirtItem,
+  emptyItem,
+  flowerItem,
+  grassItem,
+  gravelItem,
+  rockItem,
+  woodItem,
+} from "../items/index.js";
 
 export const TILE_CONFIG: Record<string, TileConfig> = {
   empty: {

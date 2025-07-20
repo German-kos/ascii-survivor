@@ -1,4 +1,4 @@
-import { Item } from "../../index.js";
+import { Item } from "../../types/index.js";
 
 export const brickWallItem: Item = {
   name: "Brick Wall",

@@ -1,4 +1,4 @@
-import { bronzeAxe, bronzePickaxe, bronzeRake } from "../game/index.js";
+import { bronzeAxe, bronzePickaxe, bronzeRake } from "../game/items/index.js";
 import { Item } from "../types/index.js";
 
 export const DEFAULT_INVENTORY_SIZE: number = 32;

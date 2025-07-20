@@ -1,10 +1,6 @@
-import {
-  DEFAULT_INVENTORY,
-  DEFAULT_INVENTORY_SIZE,
-  emptyItem,
-  Item,
-  StackItemPayload,
-} from "../../index.js";
+import { DEFAULT_INVENTORY, DEFAULT_INVENTORY_SIZE } from "../../constants/index.js";
+import { Item, StackItemPayload } from "../../types/index.js";
+import { emptyItem } from "../items/index.js";
 
 export class InventorySystem {
   private inventory: Item[];
