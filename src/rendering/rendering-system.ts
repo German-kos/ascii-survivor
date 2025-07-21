@@ -1,6 +1,13 @@
-import { CANVAS_SIZE, CELL_SIZE, FONT } from "../constants/index.js";
+import {
+  CANVAS_SIZE,
+  CELL_SIZE,
+  CHUNK_HEIGHT,
+  CHUNK_WIDTH,
+  FONT,
+} from "../constants/index.js";
 import {
   CursorRenderingParams,
+  Item,
   PlayerRenderingParams,
   Position,
   TileConfig,
@@ -26,6 +33,18 @@ export class RenderingSystem {
     this.renderChunk(chunk, playerRenderingParams.position);
     this.renderPlayer(playerRenderingParams);
     this.renderInteractiveCursor(cursorRenderingParams);
+  }
+
+  renderInventory(inventory: Item[]) {
+    this.canvas.font = FONT;
+    this.canvas.textAlign = "left";
+    this.canvas.textBaseline = "bottom";
+    inventory.forEach((item, index) => {
+      const x = CHUNK_WIDTH + 10;
+      const y = 30 + index * 30;
+      this.canvas.fillStyle = "white";
+      this.canvas.fillText(`${item.name} (x${item.quantity})`, x, y);
+    });
   }
 
   private renderChunk(chunk: TileConfig[][], playerPosition?: Position): void {
